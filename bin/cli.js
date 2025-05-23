@@ -11,14 +11,26 @@ program
 
 program
   .option('--feature', 'Fetch feature.mdc template')
-  .option('--agent', 'Fetch agent.mdc template');
+  .option('--typescript-strict', 'Fetch typescript-strict.mdc template')
+  .option('--git-commit', 'Fetch git-commit.mdc template')
+  .option('--security', 'Fetch security.mdc template')
+  .option('--performance', 'Fetch performance.mdc template')
+  .option('--error-handling', 'Fetch error-handling.mdc template')
+  .option('--all', 'Fetch all available templates');
 
 program.parse(process.argv);
 const opts = program.opts();
-const flags = Object.keys(opts).filter((k) => opts[k]);
 
-if (flags.length === 0) {
-  program.help();
+// Handle --all flag
+if (opts.all) {
+  const allTemplates = ['feature', 'typescript-strict', 'git-commit', 'security', 'performance', 'error-handling'];
+  await fetchAndWriteTemplates(allTemplates);
+} else {
+  const flags = Object.keys(opts).filter((k) => opts[k] && k !== 'all');
+
+  if (flags.length === 0) {
+    program.help();
+  } else {
+    await fetchAndWriteTemplates(flags);
+  }
 }
-
-await fetchAndWriteTemplates(flags);
