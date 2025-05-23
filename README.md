@@ -34,22 +34,44 @@ CitrusRules is a CLI tool that instantly downloads **professional coding standar
 ```bash
 # 📊 Advanced development workflow with task tracking
 npx citrusrules --development-workflow
+# or use the short flag:
+npx citrusrules -d
 
 # 🛡️ Comprehensive error handling patterns
 npx citrusrules --error-handling
+# or: npx citrusrules -e
 
 # ⚡ Performance optimization standards
 npx citrusrules --performance
+# or: npx citrusrules -p
 
 # 🔒 Security best practices
 npx citrusrules --security
+# or: npx citrusrules -s
 
 # 🌐 API design guidelines
 npx citrusrules --api-design
+# or: npx citrusrules -a
 
 # 🎨 Component development standards
 npx citrusrules --component-standards
+# or: npx citrusrules -c
 ```
+
+### 🚀 All Available Commands
+
+| Short | Long | Description |
+|-------|------|-------------|
+| `-d` | `--development-workflow` | 📊 Comprehensive development workflow with task tracking |
+| `-e` | `--error-handling` | 🛡️ Robust error handling patterns and recovery |
+| `-p` | `--performance` | ⚡ Performance optimization standards |
+| `-s` | `--security` | 🔒 Security best practices and vulnerability prevention |
+| `-a` | `--api-design` | 🌐 RESTful API design guidelines |
+| `-c` | `--component-standards` | 🎨 React/Vue component development standards |
+| `-b` | `--db-best-practices` | 🗄️ Database query and schema best practices |
+| `-o` | `--devops-ci-cd` | 🔧 DevOps and CI/CD pipeline standards |
+| `-m` | `--mobile-standards` | 📱 Mobile development best practices |
+| `-t` | `--testing-strategy` | 🧪 Comprehensive testing methodologies |
 
 ## 📋 Available Templates
 

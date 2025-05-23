@@ -10,16 +10,16 @@ program
   .description('Fetch .mdc templates into .cursor/rules');
 
 program
-  .option('--development-workflow', 'Fetch development-workflow.mdc template')
-  .option('--error-handling', 'Fetch error-handling.mdc template')
-  .option('--performance', 'Fetch performance.mdc template')
-  .option('--security', 'Fetch security.mdc template')
-  .option('--api-design', 'Fetch api-design.mdc template')
-  .option('--component-standards', 'Fetch component-standards.mdc template')
-  .option('--db-best-practices', 'Fetch db-best-practices.mdc template')
-  .option('--devops-ci-cd', 'Fetch devops-ci-cd.mdc template')
-  .option('--mobile-standards', 'Fetch mobile-standards.mdc template')
-  .option('--testing-strategy', 'Fetch testing-strategy.mdc template');
+  .option('-d, --development-workflow', 'Fetch development-workflow.mdc template')
+  .option('-e, --error-handling', 'Fetch error-handling.mdc template')
+  .option('-p, --performance', 'Fetch performance.mdc template')
+  .option('-s, --security', 'Fetch security.mdc template')
+  .option('-a, --api-design', 'Fetch api-design.mdc template')
+  .option('-c, --component-standards', 'Fetch component-standards.mdc template')
+  .option('-b, --db-best-practices', 'Fetch db-best-practices.mdc template')
+  .option('-o, --devops-ci-cd', 'Fetch devops-ci-cd.mdc template')
+  .option('-m, --mobile-standards', 'Fetch mobile-standards.mdc template')
+  .option('-t, --testing-strategy', 'Fetch testing-strategy.mdc template');
 
 program.parse(process.argv);
 const opts = program.opts();
