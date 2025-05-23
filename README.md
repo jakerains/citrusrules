@@ -32,8 +32,8 @@ CitrusRules is a CLI tool that instantly downloads **professional coding standar
 ## 🚀 Quick Start
 
 ```bash
-# 📊 Advanced feature development workflow
-npx citrusrules --feature-tracker
+# 📊 Advanced development workflow with task tracking
+npx citrusrules --development-workflow
 
 # 🛡️ Comprehensive error handling patterns
 npx citrusrules --error-handling
@@ -56,7 +56,7 @@ npx citrusrules --component-standards
 ### 🏆 Core Development Templates
 | Template | Description | Best For |
 |----------|-------------|----------|
-| 📊 **feature-tracker** | Comprehensive feature implementation workflow | Research, planning, progress tracking |
+| 📊 **development-workflow** | Comprehensive development workflow with task tracking | Research, planning, progress tracking |
 | 🛡️ **error-handling** | Robust error handling patterns and recovery | Custom errors, async safety, fault tolerance |
 | ⚡ **performance** | Performance optimization standards | Algorithm efficiency, React optimization, monitoring |
 
@@ -148,7 +148,7 @@ Each template includes examples and explanations to improve your team's coding s
 mkdir my-awesome-project && cd my-awesome-project
 
 # Get the core development templates
-npx citrusrules --feature-tracker --error-handling --performance
+npx citrusrules --development-workflow --error-handling --performance
 
 # Add security and testing standards
 npx citrusrules --security --testing-strategy
@@ -157,7 +157,7 @@ npx citrusrules --security --testing-strategy
 npx citrusrules --api-design --component-standards
 
 ls .cursor/rules/
-# → feature-tracker.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc
+# → development-workflow.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc
 
 # Now open this project in Cursor and see the magic! ✨
 ```

@@ -7,7 +7,6 @@ import { TEMPLATE_URL_BASE } from './config.js';
 // Map camelCase option names to kebab-case filenames
 function getTemplateFilename(name) {
   const mapping = {
-    'featureTracker': 'feature-tracker',
     'developmentWorkflow': 'development-workflow',
     'errorHandling': 'error-handling',
     'apiDesign': 'api-design',
