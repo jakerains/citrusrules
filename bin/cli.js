@@ -10,11 +10,9 @@ program
   .description('Fetch .mdc templates into .cursor/rules');
 
 program
-  .option('--feature', 'Fetch feature.mdc template')
   .option('--feature-tracker', 'Fetch feature-tracker.mdc template')
-  .option('--typescript-strict', 'Fetch typescript-strict.mdc template')
-  .option('--git-commit', 'Fetch git-commit.mdc template')
-  .option('--security', 'Fetch security.mdc template');
+  .option('--error-handling', 'Fetch error-handling.mdc template')
+  .option('--performance', 'Fetch performance.mdc template');
 
 program.parse(process.argv);
 const opts = program.opts();

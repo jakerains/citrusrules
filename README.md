@@ -32,27 +32,23 @@ CitrusRules is a CLI tool that instantly adds **professional coding standards** 
 ## 🚀 Quick Start
 
 ```bash
-# 🎉 One command to supercharge your AI
-npx citrusrules --feature
+# 📊 Advanced feature development workflow
+npx citrusrules --feature-tracker
 
-# 🛡️ Add security-first coding standards
-npx citrusrules --security
+# 🛡️ Comprehensive error handling patterns
+npx citrusrules --error-handling
 
-# 📝 Get perfect git commit messages
-npx citrusrules --git-commit
-
-# 🎯 Enforce TypeScript best practices
-npx citrusrules --typescript-strict
+# ⚡ Performance optimization standards
+npx citrusrules --performance
 ```
 
 ## 📋 Available Templates
 
 | Template | Description | Best For |
 |----------|-------------|----------|
-| 🚀 **feature** | Complete feature development standards | TDD, documentation, error handling |
-| 🛡️ **security** | Security-first coding practices | Preventing XSS, injection, data leaks |
-| 📝 **git-commit** | Conventional commit standards | Clean git history, automated changelogs |
-| 🎯 **typescript-strict** | Strict TypeScript enforcement | Type safety, code quality |
+| 📊 **feature-tracker** | Comprehensive feature implementation workflow | Research, planning, progress tracking |
+| 🛡️ **error-handling** | Robust error handling patterns and recovery | Custom errors, async safety, fault tolerance |
+| ⚡ **performance** | Performance optimization standards | Algorithm efficiency, React optimization, monitoring |
 
 ## 🎯 Examples
 
@@ -97,9 +93,9 @@ export async function getUser(id: string): Promise<User | null> {
 
 ```bash
 # Example workflow
-npx citrusrules --security
-# → Downloads security.mdc to .cursor/rules/
-# → Cursor now suggests secure coding patterns!
+npx citrusrules --error-handling
+# → Downloads error-handling.mdc to .cursor/rules/
+# → Cursor now suggests robust error handling patterns!
 ```
 
 ## 💡 Why CitrusRules?
@@ -110,8 +106,8 @@ No more inconsistent AI suggestions. Get code that follows industry best practic
 ### 🚀 **Faster Development** 
 Stop explaining the same coding standards over and over. Let AI remember your preferences.
 
-### 🛡️ **Security by Default**
-Built-in security templates help prevent common vulnerabilities like XSS and injection attacks.
+### 🛡️ **Enterprise-Grade Standards**
+Built-in templates for error handling, performance optimization, and feature development workflows.
 
 ### 📚 **Learn Best Practices**
 Each template includes examples and explanations to improve your team's coding skills.
@@ -121,9 +117,9 @@ Each template includes examples and explanations to improve your team's coding s
 ```bash
 # Try it now! (creates a test directory)
 mkdir my-awesome-project && cd my-awesome-project
-npx citrusrules --feature --security --git-commit
+npx citrusrules --feature-tracker --error-handling
 ls .cursor/rules/
-# → feature.mdc  security.mdc  git-commit.mdc
+# → feature-tracker.mdc  error-handling.mdc
 
 # Now open this project in Cursor and see the magic! ✨
 ```
@@ -138,13 +134,13 @@ npx citrusrules --help
 ### Option 2: Global Install
 ```bash
 npm install -g citrusrules
-citrusrules --typescript-strict
+citrusrules --performance
 ```
 
 ### Option 3: Local Project
 ```bash
 npm install --save-dev citrusrules
-npx citrusrules --security
+npx citrusrules --error-handling
 ```
 
 ## 🤝 Contributing

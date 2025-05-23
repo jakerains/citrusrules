@@ -7,10 +7,8 @@ import { TEMPLATE_URL_BASE } from './config.js';
 // Map camelCase option names to kebab-case filenames
 function getTemplateFilename(name) {
   const mapping = {
-    'gitCommit': 'git-commit',
-    'typescriptStrict': 'typescript-strict',
-    'errorHandling': 'error-handling',
-    'featureTracker': 'feature-tracker'
+    'featureTracker': 'feature-tracker',
+    'errorHandling': 'error-handling'
   };
   return mapping[name] || name;
 }

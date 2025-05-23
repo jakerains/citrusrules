@@ -1,271 +1,383 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+---
+name: ErrorHandlingStandards
+type: Auto Attached
+description: Enforce comprehensive error handling patterns, custom error types, and robust failure recovery mechanisms across all code implementations
+glob: **/*.{js,ts,tsx,jsx,py,java,go,rb,php,swift,kt}
+priority: high
+---
+
 # Error Handling Standards
 
-## Core Principles
+Implement robust, typed error handling with proper abstraction levels, meaningful messages, and comprehensive recovery mechanisms. This rule ensures consistent error handling patterns across the entire codebase.
 
-- Fail fast with meaningful error messages
-- Always handle errors at appropriate abstraction levels
-- Use typed errors instead of generic Error objects
-- Implement proper error boundaries in React applications
-- Log errors with sufficient context for debugging
-- Never silently swallow errors without handling them
-- Provide fallback mechanisms for critical functionality
+## Core Error Handling Principles
 
-## Error Types and Custom Errors
+When writing any code, I will:
 
-- Create specific error classes for different failure scenarios
-- Include error codes for programmatic error handling
-- Add contextual information to error objects
-- Use discriminated unions for typed error handling
-- Implement error serialization for API responses
+1. **Fail Fast with Context**: Detect and report errors immediately with rich contextual information
+2. **Type-Safe Error Handling**: Use typed errors instead of generic Error objects
+3. **Proper Abstraction**: Handle errors at the appropriate level in the application architecture
+4. **Never Silence**: Always handle errors explicitly - never swallow them without proper logging/recovery
+5. **Graceful Degradation**: Implement fallback mechanisms for critical functionality
+6. **User-Friendly Messages**: Provide clear, actionable error messages for users
 
-## Async Error Handling
+## Implementation Patterns
 
-- Always use try-catch with async/await
-- Handle Promise rejections explicitly
-- Implement timeout handling for network requests
-- Use AbortController for cancellable operations
-- Provide retry mechanisms for transient failures
+### 1. Custom Error Classes Architecture
 
-## Client-Side Error Handling
-
-- Implement global error boundaries
-- Handle network connectivity issues
-- Provide offline functionality where possible
-- Show user-friendly error messages
-- Implement error recovery mechanisms
-
-## Server-Side Error Handling
-
-- Validate all inputs at API boundaries
-- Use middleware for centralized error handling
-- Log errors with request context
-- Return appropriate HTTP status codes
-- Sanitize error messages for security
-
-## Code Examples
-
-### Good: Custom error classes with context
+Always implement a structured error hierarchy:
 
 ```typescript
+// Base error class with required properties
 abstract class AppError extends Error {
   abstract readonly code: string;
   abstract readonly statusCode: number;
+  abstract readonly severity: 'low' | 'medium' | 'high' | 'critical';
   
   constructor(
     message: string,
-    public readonly context?: Record<string, unknown>
+    public readonly context?: Record<string, unknown>,
+    public readonly userMessage?: string
   ) {
     super(message);
     this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      code: this.code,
+      statusCode: this.statusCode,
+      severity: this.severity,
+      context: this.context,
+      userMessage: this.userMessage
+    };
   }
 }
 
+// Specific error implementations
 class ValidationError extends AppError {
   readonly code = 'VALIDATION_ERROR';
   readonly statusCode = 400;
+  readonly severity = 'medium' as const;
 }
 
 class NotFoundError extends AppError {
   readonly code = 'NOT_FOUND';
   readonly statusCode = 404;
+  readonly severity = 'low' as const;
 }
 
 class DatabaseError extends AppError {
   readonly code = 'DATABASE_ERROR';
   readonly statusCode = 500;
+  readonly severity = 'high' as const;
 }
 ```
 
-### Good: Service with proper error handling
+### 2. Service Layer Error Handling Template
+
+Use this pattern for all service methods:
 
 ```typescript
-class UserService {
-  async getUserById(id: string): Promise<User> {
-    if (!id || typeof id !== 'string') {
-      throw new ValidationError('User ID must be a non-empty string', { id });
-    }
-
+class ServiceTemplate {
+  async operationWithErrorHandling<T>(
+    input: unknown,
+    operation: () => Promise<T>
+  ): Promise<T> {
+    // 1. Input validation
+    this.validateInput(input);
+    
     try {
-      const user = await this.userRepository.findById(id);
+      // 2. Execute operation
+      const result = await operation();
       
-      if (!user) {
-        throw new NotFoundError(`User with ID ${id} not found`, { id });
+      // 3. Validate result
+      if (!result) {
+        throw new NotFoundError('Operation returned no result', { input });
       }
       
-      return user;
+      return result;
     } catch (error) {
+      // 4. Error classification and handling
       if (error instanceof AppError) {
-        throw error; // Re-throw known errors
+        // Re-throw known errors
+        throw error;
       }
       
-      // Wrap unknown errors
-      this.logger.error('Unexpected error in getUserById', { id, error });
-      throw new DatabaseError('Failed to retrieve user', { id, originalError: error.message });
+      // 5. Wrap unknown errors with context
+      this.logger.error('Unexpected error in operation', { 
+        input, 
+        error: error.message,
+        stack: error.stack 
+      });
+      
+      throw new DatabaseError(
+        'Operation failed due to unexpected error',
+        { input, originalError: error.message },
+        'We encountered an unexpected issue. Please try again.'
+      );
+    }
+  }
+
+  private validateInput(input: unknown): void {
+    if (!input) {
+      throw new ValidationError(
+        'Input is required',
+        { input },
+        'Please provide valid input'
+      );
     }
   }
 }
 ```
 
-### Good: React Error Boundary
+### 3. Async/Await Error Handling Standards
+
+For all async operations, implement:
 
 ```typescript
+class AsyncErrorHandling {
+  async networkRequestWithRetry<T>(
+    url: string,
+    options: RequestInit = {},
+    maxRetries = 3
+  ): Promise<T> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+    let lastError: Error;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await fetch(url, {
+          ...options,
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const errorData = await this.parseErrorResponse(response);
+          
+          // Don't retry client errors (4xx)
+          if (response.status >= 400 && response.status < 500) {
+            throw new ValidationError(
+              `Client error: ${response.status}`,
+              { url, status: response.status, errorData }
+            );
+          }
+          
+          // Retry server errors (5xx) if attempts remain
+          if (attempt < maxRetries) {
+            await this.exponentialBackoff(attempt);
+            continue;
+          }
+          
+          throw new NetworkError(
+            `Server error after ${maxRetries} retries`,
+            { url, status: response.status, attempts: attempt + 1 }
+          );
+        }
+
+        return await response.json();
+      } catch (error) {
+        clearTimeout(timeoutId);
+        lastError = error;
+        
+        if (error.name === 'AbortError') {
+          throw new TimeoutError('Request timeout', { url, timeout: 30000 });
+        }
+        
+        if (error instanceof AppError) {
+          throw error;
+        }
+        
+        // Retry network errors if attempts remain
+        if (attempt < maxRetries && this.isNetworkError(error)) {
+          await this.exponentialBackoff(attempt);
+          continue;
+        }
+      }
+    }
+
+    throw new NetworkError(
+      `Network request failed after ${maxRetries} retries`,
+      { url, attempts: maxRetries + 1, lastError: lastError?.message }
+    );
+  }
+
+  private async exponentialBackoff(attempt: number): Promise<void> {
+    const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
+    await new Promise(resolve => setTimeout(resolve, delay));
+  }
+
+  private isNetworkError(error: any): boolean {
+    return error.name === 'TypeError' || 
+           error.code === 'NETWORK_ERROR' ||
+           error.message.includes('fetch');
+  }
+
+  private async parseErrorResponse(response: Response): Promise<any> {
+    try {
+      return await response.json();
+    } catch {
+      return { message: response.statusText };
+    }
+  }
+}
+```
+
+### 4. React Error Boundary Implementation
+
+Always implement error boundaries for React applications:
+
+```typescript
+interface ErrorBoundaryProps {
+  fallback?: React.ComponentType<{ error: Error; resetError: () => void }>;
+  onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
+  children: React.ReactNode;
+}
+
 interface ErrorBoundaryState {
   hasError: boolean;
   error?: Error;
-  errorInfo?: React.ErrorInfo;
 }
 
-class ErrorBoundary extends React.Component<
-  React.PropsWithChildren<{}>, 
-  ErrorBoundaryState
-> {
-  constructor(props: React.PropsWithChildren<{}>) {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return {
-      hasError: true,
-      error
-    };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    this.setState({ errorInfo });
+    // Log error with full context
+    console.error('Error Boundary caught an error:', error, errorInfo);
     
-    // Log to error reporting service
-    errorReportingService.captureException(error, {
-      extra: errorInfo,
-      tags: { component: 'ErrorBoundary' }
-    });
+    // Report to error monitoring service
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
+    }
   }
+
+  resetError = () => {
+    this.setState({ hasError: false, error: undefined });
+  };
 
   render() {
     if (this.state.hasError) {
+      const FallbackComponent = this.props.fallback || DefaultErrorFallback;
       return (
-        <div className="error-fallback">
-          <h2>Something went wrong</h2>
-          <p>We're sorry, but something unexpected happened.</p>
-          <button onClick={() => this.setState({ hasError: false })}>
-            Try again
-          </button>
-        </div>
+        <FallbackComponent 
+          error={this.state.error!} 
+          resetError={this.resetError} 
+        />
       );
     }
 
     return this.props.children;
   }
 }
+
+const DefaultErrorFallback: React.FC<{ error: Error; resetError: () => void }> = ({ 
+  error, 
+  resetError 
+}) => (
+  <div className="error-boundary-fallback">
+    <h2>Something went wrong</h2>
+    <details>
+      <summary>Error details</summary>
+      <pre>{error.message}</pre>
+    </details>
+    <button onClick={resetError}>Try again</button>
+  </div>
+);
 ```
 
-### Good: API error handling with retries
+## Error Handling Checklist
+
+When implementing any feature, ensure:
+
+- [ ] **Input Validation**: All inputs are validated with specific error messages
+- [ ] **Try-Catch Blocks**: All async operations are wrapped in try-catch
+- [ ] **Error Classification**: Errors are properly typed and classified
+- [ ] **Context Preservation**: Errors include relevant context for debugging
+- [ ] **User Messages**: User-facing errors have friendly, actionable messages
+- [ ] **Logging**: Errors are logged with sufficient detail for debugging
+- [ ] **Recovery Mechanisms**: Critical paths have fallback options
+- [ ] **Timeout Handling**: Network requests have appropriate timeouts
+- [ ] **Retry Logic**: Transient failures are handled with retry mechanisms
+- [ ] **Error Boundaries**: React components are wrapped in error boundaries
+
+## Anti-Patterns to Avoid
+
+Never implement these patterns:
 
 ```typescript
-class ApiClient {
-  async request<T>(
-    url: string, 
-    options: RequestInit = {},
-    retries = 3
-  ): Promise<T> {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000);
+// ❌ DON'T: Silent failure
+try {
+  await riskyOperation();
+} catch {
+  // Silent failure - never do this
+}
 
-    try {
-      const response = await fetch(url, {
-        ...options,
-        signal: controller.signal
-      });
+// ❌ DON'T: Generic error handling
+catch (error) {
+  throw new Error('Something went wrong');
+}
 
-      clearTimeout(timeoutId);
+// ❌ DON'T: Swallowing errors in loops
+for (const item of items) {
+  try {
+    await processItem(item);
+  } catch {
+    continue; // Losing error information
+  }
+}
 
-      if (!response.ok) {
-        const error = await this.parseErrorResponse(response);
-        
-        // Retry on server errors but not client errors
-        if (response.status >= 500 && retries > 0) {
-          await this.delay(1000);
-          return this.request<T>(url, options, retries - 1);
+// ❌ DON'T: No input validation
+async function updateUser(data) {
+  return await database.update(data); // No validation
+}
+```
+
+## Error Monitoring Integration
+
+Always include error monitoring setup:
+
+```typescript
+// Error reporting service integration
+class ErrorReporter {
+  static captureException(error: Error, context?: Record<string, unknown>) {
+    // Integration with Sentry, Bugsnag, etc.
+    if (error instanceof AppError) {
+      errorService.captureException(error, {
+        tags: { 
+          errorCode: error.code,
+          severity: error.severity 
+        },
+        extra: {
+          context: error.context,
+          userMessage: error.userMessage,
+          ...context
         }
-        
-        throw error;
-      }
-
-      return await response.json();
-    } catch (error) {
-      clearTimeout(timeoutId);
-      
-      if (error.name === 'AbortError') {
-        throw new Error('Request timeout');
-      }
-      
-      // Retry on network errors
-      if (retries > 0 && this.isNetworkError(error)) {
-        await this.delay(1000);
-        return this.request<T>(url, options, retries - 1);
-      }
-      
-      throw error;
-    }
-  }
-
-  private async parseErrorResponse(response: Response): Promise<Error> {
-    try {
-      const errorData = await response.json();
-      return new Error(errorData.message || `HTTP ${response.status}`);
-    } catch {
-      return new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-  }
-
-  private isNetworkError(error: any): boolean {
-    return error.name === 'TypeError' && error.message.includes('fetch');
-  }
-
-  private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-}
-```
-
-### Bad: Poor error handling practices
-
-```typescript
-// DON'T DO THIS - multiple anti-patterns
-class BadService {
-  async getUser(id) {
-    try {
-      const user = await fetch(`/api/users/${id}`);
-      return user.json(); // No error checking
-    } catch (e) {
-      console.log('Error'); // Swallowing error
-      return null; // Silent failure
-    }
-  }
-
-  async processData(data) {
-    // No input validation
-    for (let item of data) {
-      try {
-        await this.process(item);
-      } catch {
-        // Ignoring errors in loop
-        continue;
-      }
+      });
+    } else {
+      errorService.captureException(error, { extra: context });
     }
   }
 }
 ```
 
-## Error Monitoring
-
-- Integrate with error tracking services (Sentry, Bugsnag)
-- Set up alerts for critical error thresholds
-- Include user context in error reports
-- Monitor error trends and patterns
-- Implement error rate limiting to prevent spam
+This rule ensures all error handling follows consistent, robust patterns with proper typing, context preservation, and recovery mechanisms.

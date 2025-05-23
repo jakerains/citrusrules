@@ -1,141 +1,528 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+---
+name: PerformanceOptimizationStandards
+type: Auto Attached
+description: Implement comprehensive performance optimizations including lazy loading, memoization, efficient algorithms, bundle optimization, and monitoring across all code implementations
+glob: **/*.{js,ts,tsx,jsx,vue,svelte,py,java,go,rb,php}
+priority: high
+---
+
 # Performance Optimization Standards
 
-## Core Performance Principles
+Implement performance-first development practices with systematic optimization strategies, efficient algorithms, and comprehensive monitoring. This rule ensures all code follows performance best practices from the ground up.
 
-- Measure before optimizing - use profiling tools to identify actual bottlenecks
-- Implement lazy loading for non-critical resources and components
-- Use efficient algorithms and data structures (O(n) vs O(n²))
-- Minimize bundle size through code splitting and tree shaking
-- Optimize images and assets with compression and appropriate formats
-- Cache strategically using memoization, HTTP caching, and CDNs
-- Avoid unnecessary re-renders in React components
+## Performance Analysis Methodology
 
-## JavaScript/TypeScript Optimizations
+Before implementing any feature, I will:
 
-- Use `const` assertions for immutable data
-- Prefer native methods over custom implementations where possible
-- Avoid creating objects/functions inside render loops
-- Use `useMemo` and `useCallback` for expensive calculations
-- Implement virtual scrolling for large lists
-- Debounce/throttle expensive operations (API calls, search)
+1. **Baseline Measurement**: Establish current performance metrics before changes
+2. **Bottleneck Identification**: Use profiling tools to identify actual performance constraints
+3. **Impact Assessment**: Evaluate the performance impact of proposed changes
+4. **Optimization Strategy**: Choose appropriate optimization techniques based on analysis
+5. **Validation**: Measure improvements after implementation
 
-## Network Optimizations
+## Core Performance Implementation Patterns
 
-- Implement request batching and deduplication
-- Use GraphQL for precise data fetching
-- Compress responses with gzip/brotli
-- Implement proper cache headers
-- Use HTTP/2 server push where beneficial
-- Minimize DNS lookups and connection overhead
+### 1. React Component Optimization Template
 
-## Memory Management
-
-- Clean up event listeners and subscriptions
-- Use WeakMap/WeakSet for temporary object references
-- Monitor for memory leaks with browser dev tools
-- Avoid circular references that prevent garbage collection
-- Use object pooling for frequently created/destroyed objects
-
-## Code Examples
-
-### Good: Optimized React component with memoization
+Use this pattern for all React components:
 
 ```typescript
-import { memo, useMemo, useCallback } from 'react';
+import { memo, useMemo, useCallback, useState, useEffect } from 'react';
 
-interface ListProps {
+interface OptimizedComponentProps {
   items: Array<{ id: string; name: string; score: number }>;
-  onItemClick: (id: string) => void;
+  filters: FilterOptions;
+  onItemSelect: (id: string) => void;
+  onBulkAction: (ids: string[]) => void;
 }
 
-export const OptimizedList = memo<ListProps>(({ items, onItemClick }) => {
-  // Memoize expensive calculations
-  const sortedItems = useMemo(() => 
-    items.slice().sort((a, b) => b.score - a.score), 
-    [items]
+export const OptimizedComponent = memo<OptimizedComponentProps>(({ 
+  items, 
+  filters, 
+  onItemSelect, 
+  onBulkAction 
+}) => {
+  // Memoize expensive computations
+  const processedItems = useMemo(() => {
+    return items
+      .filter(item => matchesFilters(item, filters))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 100); // Limit initial render
+  }, [items, filters]);
+
+  // Memoize event handlers to prevent child re-renders
+  const handleItemSelect = useCallback(
+    (id: string) => () => onItemSelect(id),
+    [onItemSelect]
   );
 
-  // Memoize event handlers to prevent unnecessary re-renders
-  const handleItemClick = useCallback(
-    (id: string) => () => onItemClick(id),
-    [onItemClick]
+  const handleBulkSelect = useCallback(
+    (selectedIds: string[]) => {
+      onBulkAction(selectedIds);
+    },
+    [onBulkAction]
   );
+
+  // Virtualization for large lists
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 50 });
 
   return (
-    <div>
-      {sortedItems.map(item => (
-        <ListItem 
-          key={item.id} 
-          item={item} 
-          onClick={handleItemClick(item.id)} 
+    <VirtualizedContainer
+      itemCount={processedItems.length}
+      onRangeChange={setVisibleRange}
+    >
+      {processedItems.slice(visibleRange.start, visibleRange.end).map(item => (
+        <MemoizedListItem
+          key={item.id}
+          item={item}
+          onSelect={handleItemSelect(item.id)}
         />
       ))}
-    </div>
+    </VirtualizedContainer>
+  );
+}, (prevProps, nextProps) => {
+  // Custom comparison for complex props
+  return (
+    prevProps.items.length === nextProps.items.length &&
+    shallowEqual(prevProps.filters, nextProps.filters)
   );
 });
+
+// Memoized child component
+const MemoizedListItem = memo<{
+  item: ListItem;
+  onSelect: () => void;
+}>(({ item, onSelect }) => (
+  <div onClick={onSelect} className="list-item">
+    <span>{item.name}</span>
+    <span className="score">{item.score}</span>
+  </div>
+));
 ```
 
-### Good: Debounced search implementation
+### 2. Efficient Data Fetching and Caching Template
+
+Implement this pattern for all API interactions:
 
 ```typescript
-import { debounce } from 'lodash-es';
+class PerformantDataService {
+  private cache = new Map<string, { data: any; timestamp: number }>();
+  private requestQueue = new Map<string, Promise<any>>();
+  private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-class SearchService {
-  private searchApi = debounce(this.performSearch.bind(this), 300);
-  private cache = new Map<string, SearchResult[]>();
+  async fetchWithOptimizations<T>(
+    url: string,
+    options: RequestOptions = {}
+  ): Promise<T> {
+    const cacheKey = this.generateCacheKey(url, options);
 
-  async search(query: string): Promise<SearchResult[]> {
-    // Check cache first
-    if (this.cache.has(query)) {
-      return this.cache.get(query)!;
+    // 1. Check cache first
+    const cached = this.getCachedData<T>(cacheKey);
+    if (cached) return cached;
+
+    // 2. Deduplicate identical requests
+    if (this.requestQueue.has(cacheKey)) {
+      return this.requestQueue.get(cacheKey);
     }
 
-    return this.searchApi(query);
+    // 3. Execute request with optimizations
+    const request = this.executeOptimizedRequest<T>(url, options);
+    this.requestQueue.set(cacheKey, request);
+
+    try {
+      const result = await request;
+      
+      // 4. Cache successful responses
+      this.cache.set(cacheKey, {
+        data: result,
+        timestamp: Date.now()
+      });
+
+      return result;
+    } finally {
+      this.requestQueue.delete(cacheKey);
+    }
+  }
+
+  private async executeOptimizedRequest<T>(
+    url: string, 
+    options: RequestOptions
+  ): Promise<T> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+        headers: {
+          'Accept-Encoding': 'gzip, br',
+          'Content-Type': 'application/json',
+          ...options.headers
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  private getCachedData<T>(cacheKey: string): T | null {
+    const cached = this.cache.get(cacheKey);
+    if (!cached) return null;
+
+    // Check if cache is still valid
+    if (Date.now() - cached.timestamp > this.CACHE_TTL) {
+      this.cache.delete(cacheKey);
+      return null;
+    }
+
+    return cached.data;
+  }
+
+  private generateCacheKey(url: string, options: RequestOptions): string {
+    return `${url}:${JSON.stringify(options)}`;
+  }
+
+  // Batch multiple requests
+  async batchRequests<T>(requests: Array<{ url: string; options?: RequestOptions }>): Promise<T[]> {
+    return Promise.all(
+      requests.map(({ url, options }) => this.fetchWithOptimizations<T>(url, options))
+    );
+  }
+}
+```
+
+### 3. Performance-Optimized Algorithm Selection
+
+Always choose efficient algorithms and data structures:
+
+```typescript
+class OptimizedDataStructures {
+  // Use Map for O(1) lookups instead of Array.find O(n)
+  private userLookup = new Map<string, User>();
+  private sortedScores = new Array<{ id: string; score: number }>();
+
+  // Efficient batch operations
+  updateUsers(users: User[]): void {
+    // Clear and rebuild lookup map
+    this.userLookup.clear();
+    users.forEach(user => this.userLookup.set(user.id, user));
+
+    // Maintain sorted array for range queries
+    this.sortedScores = users
+      .map(user => ({ id: user.id, score: user.score }))
+      .sort((a, b) => b.score - a.score);
+  }
+
+  // O(1) user lookup
+  getUserById(id: string): User | undefined {
+    return this.userLookup.get(id);
+  }
+
+  // O(log n) range query using binary search
+  getUsersInScoreRange(minScore: number, maxScore: number): User[] {
+    const startIndex = this.binarySearchScore(minScore, true);
+    const endIndex = this.binarySearchScore(maxScore, false);
+    
+    return this.sortedScores
+      .slice(startIndex, endIndex + 1)
+      .map(item => this.userLookup.get(item.id)!)
+      .filter(Boolean);
+  }
+
+  private binarySearchScore(targetScore: number, findFirst: boolean): number {
+    let left = 0;
+    let right = this.sortedScores.length - 1;
+    let result = -1;
+
+    while (left <= right) {
+      const mid = Math.floor((left + right) / 2);
+      const midScore = this.sortedScores[mid].score;
+
+      if (midScore === targetScore) {
+        result = mid;
+        if (findFirst) {
+          right = mid - 1;
+        } else {
+          left = mid + 1;
+        }
+      } else if (midScore > targetScore) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+    }
+
+    return result !== -1 ? result : left;
+  }
+}
+```
+
+### 4. Memory Management and Cleanup Template
+
+Implement proper cleanup for all components:
+
+```typescript
+class ResourceManager {
+  private listeners = new Set<() => void>();
+  private timers = new Set<NodeJS.Timeout>();
+  private observers = new Set<IntersectionObserver | MutationObserver>();
+
+  // Register cleanup functions
+  addCleanup(cleanupFn: () => void): void {
+    this.listeners.add(cleanupFn);
+  }
+
+  // Track timers for cleanup
+  setTimeout(callback: () => void, delay: number): NodeJS.Timeout {
+    const timer = setTimeout(() => {
+      this.timers.delete(timer);
+      callback();
+    }, delay);
+    
+    this.timers.add(timer);
+    return timer;
+  }
+
+  // Track observers for cleanup
+  createIntersectionObserver(
+    callback: IntersectionObserverCallback,
+    options?: IntersectionObserverInit
+  ): IntersectionObserver {
+    const observer = new IntersectionObserver(callback, options);
+    this.observers.add(observer);
+    return observer;
+  }
+
+  // Cleanup all resources
+  cleanup(): void {
+    // Clear all listeners
+    this.listeners.forEach(cleanup => cleanup());
+    this.listeners.clear();
+
+    // Clear all timers
+    this.timers.forEach(timer => clearTimeout(timer));
+    this.timers.clear();
+
+    // Disconnect all observers
+    this.observers.forEach(observer => observer.disconnect());
+    this.observers.clear();
+  }
+}
+
+// React hook for automatic cleanup
+function useResourceManager(): ResourceManager {
+  const resourceManagerRef = useRef<ResourceManager>();
+
+  if (!resourceManagerRef.current) {
+    resourceManagerRef.current = new ResourceManager();
+  }
+
+  useEffect(() => {
+    return () => {
+      resourceManagerRef.current?.cleanup();
+    };
+  }, []);
+
+  return resourceManagerRef.current;
+}
+```
+
+### 5. Debounced and Throttled Operations Template
+
+Use this pattern for expensive operations:
+
+```typescript
+class OptimizedEventHandlers {
+  // Debounce for text input/search
+  private debouncedSearch = debounce(async (query: string) => {
+    const results = await this.performSearch(query);
+    this.updateSearchResults(results);
+  }, 300);
+
+  // Throttle for scroll/resize events
+  private throttledScroll = throttle((event: Event) => {
+    this.updateVisibleItems();
+    this.trackScrollMetrics(event);
+  }, 16); // ~60fps
+
+  // Batch DOM updates
+  private pendingUpdates = new Set<() => void>();
+  private updateScheduled = false;
+
+  scheduleUpdate(updateFn: () => void): void {
+    this.pendingUpdates.add(updateFn);
+    
+    if (!this.updateScheduled) {
+      this.updateScheduled = true;
+      requestAnimationFrame(() => {
+        this.pendingUpdates.forEach(fn => fn());
+        this.pendingUpdates.clear();
+        this.updateScheduled = false;
+      });
+    }
   }
 
   private async performSearch(query: string): Promise<SearchResult[]> {
-    const results = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-    const data = await results.json();
-    
-    // Cache results
-    this.cache.set(query, data);
-    
-    return data;
+    // Implement actual search logic
+    return [];
+  }
+
+  private updateSearchResults(results: SearchResult[]): void {
+    // Update UI with results
+  }
+
+  private updateVisibleItems(): void {
+    // Update visible items based on scroll position
+  }
+
+  private trackScrollMetrics(event: Event): void {
+    // Track scroll performance metrics
   }
 }
 ```
 
-### Bad: Performance anti-patterns
+## Performance Optimization Checklist
+
+For every feature implementation, ensure:
+
+### Code-Level Optimizations
+- [ ] **Algorithm Efficiency**: Use O(1) or O(log n) operations where possible
+- [ ] **Data Structures**: Choose appropriate data structures (Map vs Object, Set vs Array)
+- [ ] **Memory Management**: Implement proper cleanup for event listeners, timers, observers
+- [ ] **Memoization**: Cache expensive calculations with `useMemo`, `useCallback`, or manual caching
+- [ ] **Lazy Loading**: Defer loading of non-critical resources and components
+
+### React-Specific Optimizations
+- [ ] **Component Memoization**: Use `React.memo` for pure components
+- [ ] **Callback Optimization**: Wrap event handlers in `useCallback`
+- [ ] **Expensive Calculations**: Wrap in `useMemo` with proper dependencies
+- [ ] **Virtual Scrolling**: Implement for lists with >100 items
+- [ ] **Code Splitting**: Use dynamic imports for route-level splitting
+
+### Network Optimizations
+- [ ] **Request Deduplication**: Prevent duplicate API calls
+- [ ] **Response Caching**: Cache API responses with appropriate TTL
+- [ ] **Batch Requests**: Combine multiple requests when possible
+- [ ] **Compression**: Enable gzip/brotli compression
+- [ ] **Connection Optimization**: Minimize DNS lookups and connection overhead
+
+### Bundle Optimizations
+- [ ] **Tree Shaking**: Ensure unused code is eliminated
+- [ ] **Code Splitting**: Split vendor and application code
+- [ ] **Dynamic Imports**: Load features on demand
+- [ ] **Asset Optimization**: Compress images and use appropriate formats
+- [ ] **Bundle Analysis**: Monitor bundle size in CI/CD
+
+## Performance Monitoring Implementation
+
+Always include performance monitoring:
 
 ```typescript
-// DON'T DO THIS - multiple performance issues
-function BadComponent({ items, filter }) {
+class PerformanceMonitor {
+  // Core Web Vitals tracking
+  trackCoreWebVitals(): void {
+    // Largest Contentful Paint (LCP)
+    new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      this.reportMetric('LCP', lastEntry.startTime);
+    }).observe({ type: 'largest-contentful-paint', buffered: true });
+
+    // First Input Delay (FID)
+    new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach(entry => {
+        this.reportMetric('FID', entry.processingStart - entry.startTime);
+      });
+    }).observe({ type: 'first-input', buffered: true });
+
+    // Cumulative Layout Shift (CLS)
+    new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach(entry => {
+        if (!entry.hadRecentInput) {
+          this.reportMetric('CLS', entry.value);
+        }
+      });
+    }).observe({ type: 'layout-shift', buffered: true });
+  }
+
+  // Custom performance metrics
+  measureOperation<T>(name: string, operation: () => T): T {
+    const start = performance.now();
+    const result = operation();
+    const duration = performance.now() - start;
+    
+    this.reportMetric(`custom.${name}`, duration);
+    return result;
+  }
+
+  // Memory usage tracking
+  trackMemoryUsage(): void {
+    if ('memory' in performance) {
+      const memory = (performance as any).memory;
+      this.reportMetric('memory.used', memory.usedJSHeapSize);
+      this.reportMetric('memory.total', memory.totalJSHeapSize);
+      this.reportMetric('memory.limit', memory.jsHeapSizeLimit);
+    }
+  }
+
+  private reportMetric(name: string, value: number): void {
+    // Send to analytics service
+    analytics.track('performance.metric', { name, value });
+  }
+}
+```
+
+## Performance Anti-Patterns to Avoid
+
+Never implement these patterns:
+
+```typescript
+// ❌ DON'T: Expensive operations in render
+function BadComponent({ items }) {
   return (
     <div>
       {items
-        .filter(item => item.name.includes(filter)) // Filters on every render
+        .filter(item => expensiveFilter(item)) // Re-runs on every render
         .map((item, index) => (
-          <div 
-            key={index} // Wrong key usage
-            onClick={() => handleClick(item.id)} // New function on every render
-          >
-            {expensiveCalculation(item)} {/* Expensive calc on every render */}
+          <div key={index} onClick={() => handleClick(item)}> // New function each render
+            {expensiveCalculation(item.data)} // Expensive calc each render
           </div>
         ))}
     </div>
   );
 }
+
+// ❌ DON'T: Memory leaks
+function BadMemoryComponent() {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Do something
+    }, 1000);
+    // Missing cleanup - memory leak
+  }, []);
+}
+
+// ❌ DON'T: Inefficient data structures
+function badSearch(users: User[], query: string): User[] {
+  return users.filter(user => 
+    user.name.includes(query) || 
+    user.email.includes(query)
+  ); // O(n) search on every keystroke
+}
 ```
 
-## Performance Monitoring
-
-- Set up Core Web Vitals monitoring (LCP, FID, CLS)
-- Use browser performance API for custom metrics
-- Implement error boundaries to prevent cascading failures
-- Monitor bundle size in CI/CD pipeline
-- Set performance budgets and fail builds if exceeded
+This rule ensures all implementations follow performance-first principles with efficient algorithms, proper resource management, and comprehensive monitoring.
