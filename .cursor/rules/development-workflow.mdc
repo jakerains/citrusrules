@@ -1,11 +1,11 @@
 ---
 description: Comprehensive development workflow with structured task tracking and progress management
-globs: 
+globs: ["**/*.{js,ts,tsx,jsx,py,java,go,rb,php}"]
 alwaysApply: false
 ---
 ---
 name: DevelopmentWorkflowTracker
-type: Agent Requested
+type: Auto Attached
 description: Research, plan, implement, and track progress on new features with structured task lists and progress tracking based on Claude Code methodologies
 glob: **/*.{js,ts,tsx,jsx,py,java,go,rb,php}
 priority: high
