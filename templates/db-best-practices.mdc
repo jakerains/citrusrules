@@ -1,0 +1,43 @@
+---
+description: Database query and schema best practices.
+globs: ["**/*.{sql,ts,js,py}"]
+alwaysApply: false
+---
+---
+name: DatabaseBestPractices
+type: Auto Attached
+description: Optimize database interactions and enforce safe query patterns
+glob: **/*.{sql,ts,js,py}
+priority: high
+---
+
+# Database Best Practices
+
+Use these patterns for all database related code.
+
+## Query Guidelines
+
+- Prefer parameterized queries to avoid SQL injection.
+- Keep queries readable and well-formatted.
+- Use indexes to optimize frequent lookups.
+
+## Schema Management
+
+- Define migrations for all schema changes.
+- Keep naming consistent for tables and columns.
+- Document relationships with foreign keys.
+
+## Transactions and Error Handling
+
+- Wrap related changes in transactions.
+- Handle database errors gracefully and log details.
+- Avoid long running transactions that can lock tables.
+
+## Example
+
+```sql
+-- Parameterized query example
+SELECT * FROM users WHERE id = $1;
+```
+
+Following these rules keeps data access secure and maintainable.

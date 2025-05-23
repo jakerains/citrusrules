@@ -1,0 +1,47 @@
+---
+description: Practices for continuous integration and deployment.
+globs: ["**/.github/workflows/*", "**/*.{yml,yaml}"]
+alwaysApply: false
+---
+---
+name: DevOpsCiCdStandards
+type: Auto Attached
+description: Standardize build, test, and deployment pipelines
+glob: **/*.{yml,yaml}
+priority: high
+---
+
+# DevOps CI/CD Standards
+
+Automate testing and deployment for all projects.
+
+## Pipeline Basics
+
+- Run linting and tests on every commit.
+- Use caching to speed up builds.
+- Fail fast when steps exit with an error.
+
+## Deployment
+
+- Use environment specific configuration files.
+- Tag releases and maintain changelogs.
+- Roll back automatically on failed deployments.
+
+## Security and Monitoring
+
+- Store secrets in a secure vault.
+- Scan dependencies for vulnerabilities.
+- Monitor pipelines for unusual activity.
+
+```yaml
+# Example GitHub Actions snippet
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm test
+```
+
+These rules help maintain stable and observable delivery pipelines.
