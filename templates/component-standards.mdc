@@ -1,0 +1,54 @@
+---
+description: Guidelines for building maintainable frontend components.
+globs: ["**/*.{jsx,tsx,vue,svelte}"]
+alwaysApply: false
+---
+---
+name: ComponentStandards
+type: Auto Attached
+description: Enforce structure, naming, and styling rules for UI components across frameworks
+glob: **/*.{jsx,tsx,vue,svelte}
+priority: high
+---
+
+# Component Development Standards
+
+Follow these conventions for all components.
+
+## Naming and Organization
+
+- Use PascalCase for component names.
+- Keep each component in its own folder with `index` export.
+- Group related style files alongside the component.
+
+## Reusability Principles
+
+- Keep components small and focused on a single responsibility.
+- Accept props with explicit types and default values.
+- Avoid side effects in rendering logic.
+
+## Styling Guidelines
+
+- Prefer CSS-in-JS or scoped styles to avoid global leakage.
+- Keep class names predictable and use BEM when applicable.
+- Co-locate styles with components.
+
+## Example
+
+```tsx
+// Example React functional component
+export interface ButtonProps {
+  label: string;
+  onClick?: () => void;
+}
+
+export function Button({ label, onClick }: ButtonProps) {
+  return (
+    <button className="btn" onClick={onClick}>
+      {label}
+    </button>
+  );
+}
+```
+
+This template ensures consistency and reusability across your component library.

@@ -1,0 +1,42 @@
+---
+description: Guide for designing clean and versioned APIs.
+globs: ["**/*.{ts,js,py,go,java,rb}"]
+alwaysApply: false
+---
+---
+name: ApiDesignGuidelines
+type: Auto Attached
+description: Define standards for REST and GraphQL API design and documentation
+glob: **/*.{ts,js,py,go,java,rb}
+priority: high
+---
+
+# API Design Guidelines
+
+Build services with clear contracts and predictable behavior.
+
+## Principles
+
+- Use nouns for resource names and consistent HTTP verbs.
+- Version APIs from the start (`/v1/`).
+- Provide helpful error responses with codes and messages.
+
+## Documentation
+
+- Document each endpoint with examples and parameters.
+- Keep changelog entries for breaking changes.
+- Use OpenAPI or GraphQL schema definitions.
+
+## Security and Performance
+
+- Validate all input data before processing.
+- Support pagination and filtering for collections.
+- Avoid leaking internal implementation details.
+
+## Example
+
+```http
+GET /v1/users?limit=20&page=2
+```
+
+Follow these guidelines to create stable and maintainable APIs.
