@@ -1,6 +1,11 @@
 ---
+description: Research, plan, implement, and track progress on new features with structured task lists and progress tracking based on Claude Code methodologies
+globs: 
+alwaysApply: false
+---
+---
 name: FeatureImplementationTracker
-type: Agent Requested
+type: Auto Attached
 description: Research, plan, implement, and track progress on new features with structured task lists and progress tracking based on Claude Code methodologies
 glob: **/*.{js,ts,tsx,jsx,py,java,go,rb,php}
 priority: high
@@ -13,143 +18,144 @@ As your development assistant, I'll help build new features or components by fol
 ## Planning Strategy
 
 I'll use extended thinking mode for complex planning. When you want more thorough analysis, prompt me with:
-- "think" for basic planning (4,000 token budget)
-- "think hard" for deeper analysis (10,000 token budget)
-- "think harder" for extensive planning (20,000 token budget)
-- "ultrathink" for maximum planning depth (30,000+ token budget)
 
-## 1. Research Phase
+- **"think"** - Medium analysis depth
+- **"think hard"** - Deep analysis with multiple considerations  
+- **"ultrathink"** - Maximum analysis for complex architectural decisions
 
-- Analyze the current codebase architecture and dependencies
-- Research the latest best practices, libraries, and approaches for the requested feature
-- Provide a summary of findings with links to relevant documentation
-- Compare implementation approaches with clear pros/cons tables
-- Consider:
-  - Compatibility with existing architecture
-  - Performance implications
-  - Scalability concerns
-  - Maintainability impacts
-  - Security considerations
+## 5-Phase Development Workflow
 
-## 2. Planning Phase
+### Phase 1: Research & Discovery
+1. **Understand Requirements**: Clarify the feature scope, constraints, and success criteria
+2. **Technical Analysis**: Assess current architecture, dependencies, and integration points
+3. **User Journey Mapping**: Define how users will interact with this feature
+4. **Risk Assessment**: Identify potential challenges, blockers, and mitigation strategies
 
-- Create a detailed markdown file named `[feature-name]-implementation-plan.md`
-- Break implementation into discrete, sequential tasks with clear dependencies
-- Perform complexity analysis for each task:
-  - Low: Simple implementation with minimal dependencies
-  - Medium: Moderate complexity with some dependencies
-  - High: Complex implementation with significant dependencies or architectural impacts
-  - Critical: Tasks that affect core functionality or require special attention
-- Include detailed acceptance criteria for each task
-- Create task dependency graph to visualize implementation flow
-- Plan for tests at each implementation stage (unit, integration, E2E)
-- Identify potential failure points and mitigation strategies
+### Phase 2: Planning & Architecture  
+1. **Technical Design**: Create detailed implementation approach with architecture diagrams
+2. **Task Breakdown**: Split work into manageable, testable chunks with clear acceptance criteria
+3. **Dependency Mapping**: Identify what needs to be built first and integration requirements
+4. **Timeline Estimation**: Provide realistic effort estimates with buffer for unknowns
 
-## 3. Implementation Phase
+### Phase 3: Implementation
+1. **Environment Setup**: Ensure development environment is ready with all dependencies
+2. **Incremental Development**: Build feature in small, testable increments
+3. **Code Quality**: Follow established patterns, add comprehensive tests, and document decisions
+4. **Progress Tracking**: Regular check-ins with clear status updates and blocker identification
 
-- Work through tasks sequentially respecting dependencies
-- For each task implementation:
-  1. Review task requirements and acceptance criteria
-  2. Implement the code required
-  3. Verify implementation meets requirements
-  4. Write tests to validate functionality
-  5. Document any architectural decisions or patterns used
-- Mark completed tasks with ✅
-- Document deviations from the original plan with reasoning
-- Re-evaluate remaining tasks after each major milestone
-- Address edge cases and error handling proactively
+### Phase 4: Verification & Testing
+1. **Unit Testing**: Comprehensive test coverage for all new functionality
+2. **Integration Testing**: Verify feature works properly with existing systems
+3. **User Acceptance**: Validate feature meets original requirements and user needs
+4. **Performance Testing**: Ensure feature doesn't negatively impact system performance
 
-## 4. Verification & Testing
+### Phase 5: Progress Tracking & Documentation
+1. **Status Dashboard**: Maintain clear visibility into completed, in-progress, and pending tasks
+2. **Decision Log**: Document key technical decisions and rationale for future reference
+3. **Lessons Learned**: Capture insights for improving future development workflows
+4. **Handoff Documentation**: Prepare comprehensive documentation for maintenance and future development
 
-- Generate appropriate tests based on task requirements:
-  - Unit tests for isolated functionality
-  - Integration tests for component interactions
-  - E2E tests for critical user flows
-- Verify each component individually before integration
-- Check for performance impacts and optimization opportunities
-- Ensure error handling is comprehensive
-- Validate against the original acceptance criteria
+## Task Management Templates
 
-## 5. Progress Tracking
+### Task Definition Template
+```
+## Task: [Brief Description]
+**Priority**: High/Medium/Low
+**Estimate**: [Time estimate]
+**Dependencies**: [What must be completed first]
+**Acceptance Criteria**:
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
 
-- Track overall progress as a percentage complete
-- Identify any tasks that took longer than expected and analyze why
-- Document newly discovered tasks during implementation
-- Maintain a timestamped implementation history
-- Capture lessons learned for future reference
-- Regularly update the implementation plan with current status
-
-## Task Structure Template
-
-```markdown
-# [Feature Name] Implementation Plan
-
-## Overview
-[Brief description of the feature and its purpose]
-
-## Research Findings
-[Summary of research conducted and relevant findings]
-
-## Implementation Strategy
-[High-level approach and architectural decisions]
-
-## Tasks
-
-### 1. Setup & Preparation
-- [ ] Task 1.1: [Description] (Complexity: Low/Medium/High/Critical)
-  - Acceptance criteria: [Specific criteria]
-  - Dependencies: [Any prerequisite tasks]
-  - Estimated time: [Time estimate]
-  - Implementation notes: [Notes]
-  - Test strategy: [Test approach]
-
-### 2. Core Implementation
-- [ ] Task 2.1: [Description] (Complexity: Low/Medium/High/Critical)
-  - Acceptance criteria: [Specific criteria]
-  - Dependencies: [Any prerequisite tasks]
-  - Estimated time: [Time estimate]
-  - Implementation notes: [Notes]
-  - Test strategy: [Test approach]
-
-### 3. Testing & Refinement
-- [ ] Task 3.1: [Description] (Complexity: Low/Medium/High/Critical)
-  - Acceptance criteria: [Specific criteria]
-  - Dependencies: [Any prerequisite tasks]
-  - Estimated time: [Time estimate]
-  - Implementation notes: [Notes]
-
-### 4. Documentation & Integration
-- [ ] Task 4.1: [Description] (Complexity: Low/Medium/High/Critical)
-  - Acceptance criteria: [Specific criteria]
-  - Dependencies: [Any prerequisite tasks]
-  - Estimated time: [Time estimate]
-  - Implementation notes: [Notes]
-
-## Progress Tracking
-- Started: [Date/Time]
-- Current Status: 0% complete
-- Last Updated: [Date/Time]
-- Blockers: [Any current blockers]
-- Next Action: [Next immediate action]
-
-## Implementation History
-[This section will be updated as tasks are completed]
-
-## Lessons Learned
-[To be populated during implementation]
+**Implementation Notes**:
+- Technical approach
+- Edge cases to consider
+- Testing strategy
 ```
 
-## Task Update Protocol
+### Progress Tracking Template
+```
+## Feature Progress: [Feature Name]
+**Overall Status**: [% Complete] 
+**Current Phase**: [Research/Planning/Implementation/Verification/Documentation]
 
-After completing each task, I'll:
-1. Mark the task as completed with ✅
-2. Add detailed implementation notes including:
-   - Approach taken
-   - Any challenges encountered
-   - Architectural decisions made
-   - Links to relevant documentation
-3. Update the progress percentage
-4. Add a timestamped entry to the implementation history
+### Completed Tasks ✅
+- [x] Task 1 - Brief description
+- [x] Task 2 - Brief description
+
+### In Progress 🔄
+- [ ] Task 3 - Brief description (Assignee: [Name])
+- [ ] Task 4 - Brief description (Assignee: [Name])
+
+### Pending Tasks 📋
+- [ ] Task 5 - Brief description
+- [ ] Task 6 - Brief description
+
+### Blockers & Risks ⚠️
+- **Blocker 1**: Description and mitigation plan
+- **Risk 1**: Potential impact and monitoring approach
+
+### Next Steps 👥
+1. [Immediate next action]
+2. [Following action]
+3. [Future consideration]
+```
+
+## Implementation Guidelines
+
+When implementing features, I will:
+
+1. **Start with clarification** - Ensure I understand the requirements completely before proceeding
+2. **Provide detailed plans** - Break down complex features into manageable tasks with clear acceptance criteria
+3. **Follow established patterns** - Use existing architectural patterns and coding standards
+4. **Prioritize testing** - Write tests alongside implementation to ensure reliability
+5. **Document decisions** - Explain technical choices and trade-offs for future reference
+6. **Track progress** - Maintain clear visibility into what's completed, in-progress, and pending
+7. **Identify dependencies** - Call out what needs to be done first and integration requirements
+8. **Communicate blockers** - Highlight issues that need resolution to maintain progress
+9. **Provide regular updates** - Keep stakeholders informed of progress and any changes to timeline
+10. **Plan for maintenance** - Consider long-term maintainability and documentation needs
+
+## Progress Tracking Integration
+
+During feature development, I'll maintain a progress dashboard that includes:
+
+1. **Feature Overview**: High-level description, success criteria, and current status
+2. **Task Breakdown**: Detailed list of all tasks with status, assignee, and completion percentage
+3. **Timeline**: Key milestones, dependencies, and estimated completion dates
+4. **Risk Register**: Identified risks, mitigation strategies, and current status
+5. **Decision Log**: Record of key technical decisions and rationale
+6. **Testing Status**: Test coverage, passing/failing tests, and quality metrics
+7. **Documentation**: Links to technical documentation, user guides, and implementation notes
+
+## Success Metrics
+
+For each feature implementation, I'll track:
+
+1. **Completion Rate**: Percentage of tasks completed on time
+2. **Quality Metrics**: Test coverage, bug reports, performance impact
+3. **User Satisfaction**: Feedback on feature usability and value
+4. **Technical Debt**: Code quality, maintainability, and documentation completeness
+5. **Knowledge Transfer**: Successful handoff to maintenance team
+
+## Workflow Integration
+
+This approach integrates seamlessly with common development workflows:
+
+- **Agile/Scrum**: Tasks align with sprint planning and daily standups
+- **Kanban**: Progress tracking supports visual workflow management  
+- **GitOps**: Documentation and decisions integrate with pull request workflows
+- **DevOps**: Verification phase aligns with CI/CD pipeline requirements
+
+## Regular Review Process
+
+I'll regularly review and update the implementation approach by:
+
+1. Assessing progress against original timeline and adjusting as needed
+2. Identifying process improvements based on lessons learned
+3. Updating risk assessments as new information becomes available
+4. Refining task breakdown and estimates based on actual completion times
 5. Identify and recommend the next task to tackle
 6. Update any dependencies affected by this task
 
