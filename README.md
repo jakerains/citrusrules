@@ -40,15 +40,44 @@ npx citrusrules --error-handling
 
 # ⚡ Performance optimization standards
 npx citrusrules --performance
+
+# 🔒 Security best practices
+npx citrusrules --security
+
+# 🌐 API design guidelines
+npx citrusrules --api-design
+
+# 🎨 Component development standards
+npx citrusrules --component-standards
 ```
 
 ## 📋 Available Templates
 
+### 🏆 Core Development Templates
 | Template | Description | Best For |
 |----------|-------------|----------|
 | 📊 **feature-tracker** | Comprehensive feature implementation workflow | Research, planning, progress tracking |
 | 🛡️ **error-handling** | Robust error handling patterns and recovery | Custom errors, async safety, fault tolerance |
 | ⚡ **performance** | Performance optimization standards | Algorithm efficiency, React optimization, monitoring |
+
+### 🔒 Security & Quality Templates  
+| Template | Description | Best For |
+|----------|-------------|----------|
+| 🔒 **security** | Security best practices and vulnerability prevention | XSS protection, input validation, secure coding |
+| 🧪 **testing-strategy** | Comprehensive testing methodologies | Unit testing, integration testing, TDD practices |
+
+### 🎨 Architecture & Design Templates
+| Template | Description | Best For |
+|----------|-------------|----------|
+| 🌐 **api-design** | RESTful API design guidelines | Endpoint design, HTTP standards, documentation |
+| 🎨 **component-standards** | React/Vue component development standards | Component architecture, props design, lifecycle |
+| 🗄️ **db-best-practices** | Database query and schema best practices | Query optimization, indexing, data modeling |
+
+### 🚀 DevOps & Mobile Templates
+| Template | Description | Best For |
+|----------|-------------|----------|
+| 🔧 **devops-ci-cd** | DevOps and CI/CD pipeline standards | Deployment, automation, infrastructure as code |
+| 📱 **mobile-standards** | Mobile development best practices | Performance, UX patterns, platform guidelines |
 
 ## 🎯 Examples
 
@@ -117,9 +146,18 @@ Each template includes examples and explanations to improve your team's coding s
 ```bash
 # Try it now! (creates a test directory)
 mkdir my-awesome-project && cd my-awesome-project
-npx citrusrules --feature-tracker --error-handling
+
+# Get the core development templates
+npx citrusrules --feature-tracker --error-handling --performance
+
+# Add security and testing standards
+npx citrusrules --security --testing-strategy
+
+# Include architecture templates
+npx citrusrules --api-design --component-standards
+
 ls .cursor/rules/
-# → feature-tracker.mdc  error-handling.mdc
+# → feature-tracker.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc
 
 # Now open this project in Cursor and see the magic! ✨
 ```
@@ -201,12 +239,22 @@ alwaysApply: false              # Whether to apply everywhere
 
 ## 🗺️ Roadmap
 
-- [ ] 🎨 React/Vue component standards
-- [ ] 🗄️ Database query best practices  
-- [ ] 🧪 Testing strategy templates
-- [ ] 🌐 API design guidelines
-- [ ] 📱 Mobile development standards
-- [ ] 🔧 DevOps and CI/CD rules
+### ✅ Recently Completed
+- [x] 🎨 React/Vue component standards
+- [x] 🗄️ Database query best practices  
+- [x] 🧪 Testing strategy templates
+- [x] 🌐 API design guidelines
+- [x] 📱 Mobile development standards
+- [x] 🔧 DevOps and CI/CD rules
+- [x] 🔒 Enhanced security templates
+
+### 🔮 Future Enhancements
+- [ ] 🤖 AI/ML development standards
+- [ ] ⚙️ Microservices architecture patterns
+- [ ] 🎯 Accessibility (a11y) guidelines
+- [ ] 🌍 Internationalization (i18n) best practices
+- [ ] 📊 Analytics and monitoring templates
+- [ ] 🎨 Design system integration standards
 
 ## ❓ FAQ
 

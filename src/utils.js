@@ -8,7 +8,13 @@ import { TEMPLATE_URL_BASE } from './config.js';
 function getTemplateFilename(name) {
   const mapping = {
     'featureTracker': 'feature-tracker',
-    'errorHandling': 'error-handling'
+    'errorHandling': 'error-handling',
+    'apiDesign': 'api-design',
+    'componentStandards': 'component-standards',
+    'dbBestPractices': 'db-best-practices',
+    'devopsCiCd': 'devops-ci-cd',
+    'mobileStandards': 'mobile-standards',
+    'testingStrategy': 'testing-strategy'
   };
   return mapping[name] || name;
 }
