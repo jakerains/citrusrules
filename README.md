@@ -19,12 +19,12 @@
 
 ## 🎯 What is CitrusRules?
 
-CitrusRules is a CLI tool that instantly adds **professional coding standards** to your Cursor AI assistant. Instead of generic suggestions, get AI-powered code that follows your team's best practices for TypeScript, security, git commits, and more.
+CitrusRules is a CLI tool that instantly downloads **professional coding standards** for your Cursor AI assistant. Instead of generic suggestions, get AI-powered code that follows your team's best practices for TypeScript, security, git commits, and more.
 
 ### ✨ Key Benefits
 
 - 🧠 **Smarter AI**: Train Cursor with proven coding standards
-- ⚡ **Instant Setup**: One command to add professional rules
+- ⚡ **Instant Setup**: One command to download professional rules
 - 🔒 **Battle-Tested**: Templates used by real development teams
 - 🎨 **Customizable**: Easy to modify for your specific needs
 - 🌟 **Zero Config**: Works out of the box
@@ -115,10 +115,10 @@ export async function getUser(id: string): Promise<User | null> {
 
 ## 🔧 How It Works
 
-1. **📥 Fetch**: Downloads curated `.mdc` rule templates
-2. **📁 Save**: Places them in `.cursor/rules/` directory  
-3. **🧠 Train**: Cursor AI learns your coding standards
-4. **✨ Code**: Get suggestions that follow your rules!
+1. **📥 Fetch**: Downloads curated `.mdc` rule templates from GitHub
+2. **📁 Save**: Places them in your project's `.cursor/rules/` directory  
+3. **🧠 Train**: Cursor AI learns your coding standards automatically
+4. **✨ Code**: Get suggestions that follow your rules instantly!
 
 ```bash
 # Example workflow
@@ -162,20 +162,20 @@ ls .cursor/rules/
 # Now open this project in Cursor and see the magic! ✨
 ```
 
-## 📦 Installation
+## 📦 Usage
 
 ### Option 1: NPX (Recommended)
 ```bash
 npx citrusrules --help
 ```
 
-### Option 2: Global Install
+### Option 2: Global Access
 ```bash
 npm install -g citrusrules
 citrusrules --performance
 ```
 
-### Option 3: Local Project
+### Option 3: Project Scripts
 ```bash
 npm install --save-dev citrusrules
 npx citrusrules --error-handling
