@@ -11,6 +11,7 @@ program
 
 program
   .option('--feature-tracker', 'Fetch feature-tracker.mdc template')
+  .option('--development-workflow', 'Fetch development-workflow.mdc template')
   .option('--error-handling', 'Fetch error-handling.mdc template')
   .option('--performance', 'Fetch performance.mdc template')
   .option('--security', 'Fetch security.mdc template')
