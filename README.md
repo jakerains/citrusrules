@@ -4,7 +4,7 @@
 
 ### *Supercharge your Cursor AI with curated coding standards*
 
-[![npm version](https://badge.fury.io/js/citrusrules.svg)](https://www.npmjs.com/package/citrusrules)
+[![npm version](https://img.shields.io/npm/v/citrusrules.svg)](https://www.npmjs.com/package/citrusrules)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Downloads](https://img.shields.io/npm/dm/citrusrules.svg)](https://www.npmjs.com/package/citrusrules)
 [![GitHub stars](https://img.shields.io/github/stars/jakerains/citrusrules.svg?style=social&label=Star)](https://github.com/jakerains/citrusrules)
