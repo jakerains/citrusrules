@@ -1,6 +1,6 @@
 ---
 description: Research, plan, implement, and track progress on new features with structured task lists and progress tracking based on Claude Code methodologies
-globs: 
+globs: ["**/*.{js,ts,tsx,jsx,py,java,go,rb,php}"]
 alwaysApply: false
 ---
 ---
