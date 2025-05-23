@@ -1,0 +1,36 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Using Cursor Rules in CitrusRules
+
+## Accessing Existing Rules
+- Cursor rules provide contextual guidance for this project
+- View rules in the `.cursor/rules/` directory
+- Rules apply automatically based on their metadata:
+  - `alwaysApply: true` - Applied to all contexts
+  - `globs: ["**/*.js"]` - Applied to matching files
+  - Others can be referenced directly with `@ruleName`
+
+## Creating New Rules
+1. Create a new `.mdc` file in the `.cursor/rules/` directory
+2. Include the required YAML frontmatter section at the top:
+   ```yaml
+   ---
+   description: Brief description of the rule
+   globs: ["**/*.js"]  # Optional - files this applies to
+   alwaysApply: false  # Optional - whether to always apply
+   ---
+   ```
+3. Write your rule content in Markdown format
+4. Reference project files using: `[filename.js](mdc:filename.js)`
+
+## Using CitrusRules to Add Templates
+- Run:
+  ```bash
+  npx citrusrules --feature --agent
+  ```
+- This will fetch predefined templates from the GitHub repository 
+- Templates are fetched from: [src/config.js](mdc:src/config.js)
+- New templates require adding new flags to [bin/cli.js](mdc:bin/cli.js)
