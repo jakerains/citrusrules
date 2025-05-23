@@ -1,0 +1,271 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Error Handling Standards
+
+## Core Principles
+
+- Fail fast with meaningful error messages
+- Always handle errors at appropriate abstraction levels
+- Use typed errors instead of generic Error objects
+- Implement proper error boundaries in React applications
+- Log errors with sufficient context for debugging
+- Never silently swallow errors without handling them
+- Provide fallback mechanisms for critical functionality
+
+## Error Types and Custom Errors
+
+- Create specific error classes for different failure scenarios
+- Include error codes for programmatic error handling
+- Add contextual information to error objects
+- Use discriminated unions for typed error handling
+- Implement error serialization for API responses
+
+## Async Error Handling
+
+- Always use try-catch with async/await
+- Handle Promise rejections explicitly
+- Implement timeout handling for network requests
+- Use AbortController for cancellable operations
+- Provide retry mechanisms for transient failures
+
+## Client-Side Error Handling
+
+- Implement global error boundaries
+- Handle network connectivity issues
+- Provide offline functionality where possible
+- Show user-friendly error messages
+- Implement error recovery mechanisms
+
+## Server-Side Error Handling
+
+- Validate all inputs at API boundaries
+- Use middleware for centralized error handling
+- Log errors with request context
+- Return appropriate HTTP status codes
+- Sanitize error messages for security
+
+## Code Examples
+
+### Good: Custom error classes with context
+
+```typescript
+abstract class AppError extends Error {
+  abstract readonly code: string;
+  abstract readonly statusCode: number;
+  
+  constructor(
+    message: string,
+    public readonly context?: Record<string, unknown>
+  ) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+class ValidationError extends AppError {
+  readonly code = 'VALIDATION_ERROR';
+  readonly statusCode = 400;
+}
+
+class NotFoundError extends AppError {
+  readonly code = 'NOT_FOUND';
+  readonly statusCode = 404;
+}
+
+class DatabaseError extends AppError {
+  readonly code = 'DATABASE_ERROR';
+  readonly statusCode = 500;
+}
+```
+
+### Good: Service with proper error handling
+
+```typescript
+class UserService {
+  async getUserById(id: string): Promise<User> {
+    if (!id || typeof id !== 'string') {
+      throw new ValidationError('User ID must be a non-empty string', { id });
+    }
+
+    try {
+      const user = await this.userRepository.findById(id);
+      
+      if (!user) {
+        throw new NotFoundError(`User with ID ${id} not found`, { id });
+      }
+      
+      return user;
+    } catch (error) {
+      if (error instanceof AppError) {
+        throw error; // Re-throw known errors
+      }
+      
+      // Wrap unknown errors
+      this.logger.error('Unexpected error in getUserById', { id, error });
+      throw new DatabaseError('Failed to retrieve user', { id, originalError: error.message });
+    }
+  }
+}
+```
+
+### Good: React Error Boundary
+
+```typescript
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+  errorInfo?: React.ErrorInfo;
+}
+
+class ErrorBoundary extends React.Component<
+  React.PropsWithChildren<{}>, 
+  ErrorBoundaryState
+> {
+  constructor(props: React.PropsWithChildren<{}>) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return {
+      hasError: true,
+      error
+    };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    this.setState({ errorInfo });
+    
+    // Log to error reporting service
+    errorReportingService.captureException(error, {
+      extra: errorInfo,
+      tags: { component: 'ErrorBoundary' }
+    });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-fallback">
+          <h2>Something went wrong</h2>
+          <p>We're sorry, but something unexpected happened.</p>
+          <button onClick={() => this.setState({ hasError: false })}>
+            Try again
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+### Good: API error handling with retries
+
+```typescript
+class ApiClient {
+  async request<T>(
+    url: string, 
+    options: RequestInit = {},
+    retries = 3
+  ): Promise<T> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const error = await this.parseErrorResponse(response);
+        
+        // Retry on server errors but not client errors
+        if (response.status >= 500 && retries > 0) {
+          await this.delay(1000);
+          return this.request<T>(url, options, retries - 1);
+        }
+        
+        throw error;
+      }
+
+      return await response.json();
+    } catch (error) {
+      clearTimeout(timeoutId);
+      
+      if (error.name === 'AbortError') {
+        throw new Error('Request timeout');
+      }
+      
+      // Retry on network errors
+      if (retries > 0 && this.isNetworkError(error)) {
+        await this.delay(1000);
+        return this.request<T>(url, options, retries - 1);
+      }
+      
+      throw error;
+    }
+  }
+
+  private async parseErrorResponse(response: Response): Promise<Error> {
+    try {
+      const errorData = await response.json();
+      return new Error(errorData.message || `HTTP ${response.status}`);
+    } catch {
+      return new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+  }
+
+  private isNetworkError(error: any): boolean {
+    return error.name === 'TypeError' && error.message.includes('fetch');
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+}
+```
+
+### Bad: Poor error handling practices
+
+```typescript
+// DON'T DO THIS - multiple anti-patterns
+class BadService {
+  async getUser(id) {
+    try {
+      const user = await fetch(`/api/users/${id}`);
+      return user.json(); // No error checking
+    } catch (e) {
+      console.log('Error'); // Swallowing error
+      return null; // Silent failure
+    }
+  }
+
+  async processData(data) {
+    // No input validation
+    for (let item of data) {
+      try {
+        await this.process(item);
+      } catch {
+        // Ignoring errors in loop
+        continue;
+      }
+    }
+  }
+}
+```
+
+## Error Monitoring
+
+- Integrate with error tracking services (Sentry, Bugsnag)
+- Set up alerts for critical error thresholds
+- Include user context in error reports
+- Monitor error trends and patterns
+- Implement error rate limiting to prevent spam

@@ -3,3 +3,65 @@ description:
 globs:
 alwaysApply: false
 ---
+# Security Standards
+
+## Input Validation & Sanitization
+
+- Validate ALL user inputs on both client and server side
+- Use parameterized queries to prevent SQL injection
+- Sanitize HTML content to prevent XSS attacks
+- Implement rate limiting on API endpoints
+- Use schema validation libraries (Zod, Joi, Yup)
+
+## Authentication & Authorization
+
+- Never store passwords in plain text - use bcrypt/Argon2
+- Implement proper session management with secure tokens
+- Use HTTPS for all authentication-related requests
+- Validate permissions on every protected operation
+- Implement proper logout functionality
+
+## Data Protection
+
+- Never log sensitive data (passwords, tokens, PII)
+- Use environment variables for secrets, never hardcode
+- Implement proper CORS policies
+- Sanitize error messages to prevent information leakage
+- Use secure HTTP headers (HSTS, CSP, X-Frame-Options)
+
+## Examples
+
+### Good: Secure API endpoint
+```typescript
+import bcrypt from 'bcrypt';
+import { z } from 'zod';
+
+const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8)
+});
+
+export async function login(request: Request): Promise<Response> {
+  const body = await request.json();
+  const { email, password } = LoginSchema.parse(body);
+  
+  const user = await findUserByEmail(email);
+  if (!user || !await bcrypt.compare(password, user.hashedPassword)) {
+    return new Response('Invalid credentials', { status: 401 });
+  }
+  
+  const token = await createSecureToken(user.id);
+  return Response.json({ token });
+}
+```
+
+### Bad: Insecure practices
+```typescript
+// DON'T DO THIS
+export function login(email: any, password: any) {
+  const user = db.query(`SELECT * FROM users WHERE email = '${email}'`); // SQL injection
+  if (user.password === password) { // Plain text password
+    return { success: true, user }; // Exposing user data
+  }
+}
+```

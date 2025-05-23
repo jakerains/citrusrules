@@ -1,0 +1,141 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Performance Optimization Standards
+
+## Core Performance Principles
+
+- Measure before optimizing - use profiling tools to identify actual bottlenecks
+- Implement lazy loading for non-critical resources and components
+- Use efficient algorithms and data structures (O(n) vs O(n²))
+- Minimize bundle size through code splitting and tree shaking
+- Optimize images and assets with compression and appropriate formats
+- Cache strategically using memoization, HTTP caching, and CDNs
+- Avoid unnecessary re-renders in React components
+
+## JavaScript/TypeScript Optimizations
+
+- Use `const` assertions for immutable data
+- Prefer native methods over custom implementations where possible
+- Avoid creating objects/functions inside render loops
+- Use `useMemo` and `useCallback` for expensive calculations
+- Implement virtual scrolling for large lists
+- Debounce/throttle expensive operations (API calls, search)
+
+## Network Optimizations
+
+- Implement request batching and deduplication
+- Use GraphQL for precise data fetching
+- Compress responses with gzip/brotli
+- Implement proper cache headers
+- Use HTTP/2 server push where beneficial
+- Minimize DNS lookups and connection overhead
+
+## Memory Management
+
+- Clean up event listeners and subscriptions
+- Use WeakMap/WeakSet for temporary object references
+- Monitor for memory leaks with browser dev tools
+- Avoid circular references that prevent garbage collection
+- Use object pooling for frequently created/destroyed objects
+
+## Code Examples
+
+### Good: Optimized React component with memoization
+
+```typescript
+import { memo, useMemo, useCallback } from 'react';
+
+interface ListProps {
+  items: Array<{ id: string; name: string; score: number }>;
+  onItemClick: (id: string) => void;
+}
+
+export const OptimizedList = memo<ListProps>(({ items, onItemClick }) => {
+  // Memoize expensive calculations
+  const sortedItems = useMemo(() => 
+    items.slice().sort((a, b) => b.score - a.score), 
+    [items]
+  );
+
+  // Memoize event handlers to prevent unnecessary re-renders
+  const handleItemClick = useCallback(
+    (id: string) => () => onItemClick(id),
+    [onItemClick]
+  );
+
+  return (
+    <div>
+      {sortedItems.map(item => (
+        <ListItem 
+          key={item.id} 
+          item={item} 
+          onClick={handleItemClick(item.id)} 
+        />
+      ))}
+    </div>
+  );
+});
+```
+
+### Good: Debounced search implementation
+
+```typescript
+import { debounce } from 'lodash-es';
+
+class SearchService {
+  private searchApi = debounce(this.performSearch.bind(this), 300);
+  private cache = new Map<string, SearchResult[]>();
+
+  async search(query: string): Promise<SearchResult[]> {
+    // Check cache first
+    if (this.cache.has(query)) {
+      return this.cache.get(query)!;
+    }
+
+    return this.searchApi(query);
+  }
+
+  private async performSearch(query: string): Promise<SearchResult[]> {
+    const results = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+    const data = await results.json();
+    
+    // Cache results
+    this.cache.set(query, data);
+    
+    return data;
+  }
+}
+```
+
+### Bad: Performance anti-patterns
+
+```typescript
+// DON'T DO THIS - multiple performance issues
+function BadComponent({ items, filter }) {
+  return (
+    <div>
+      {items
+        .filter(item => item.name.includes(filter)) // Filters on every render
+        .map((item, index) => (
+          <div 
+            key={index} // Wrong key usage
+            onClick={() => handleClick(item.id)} // New function on every render
+          >
+            {expensiveCalculation(item)} {/* Expensive calc on every render */}
+          </div>
+        ))}
+    </div>
+  );
+}
+```
+
+## Performance Monitoring
+
+- Set up Core Web Vitals monitoring (LCP, FID, CLS)
+- Use browser performance API for custom metrics
+- Implement error boundaries to prevent cascading failures
+- Monitor bundle size in CI/CD pipeline
+- Set performance budgets and fail builds if exceeded

@@ -3,3 +3,110 @@ description:
 globs:
 alwaysApply: false
 ---
+# Git Commit Message Standards
+
+## Conventional Commits Format
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+## Required Types
+
+- `feat`: New feature for the user
+- `fix`: Bug fix for the user
+- `docs`: Documentation changes
+- `style`: Code formatting (no logic changes)
+- `refactor`: Code restructuring without changing functionality
+- `test`: Adding or updating tests
+- `chore`: Build process, dependency updates
+
+## Rules
+
+- Keep subject line under 50 characters
+- Use imperative mood ("Add feature" not "Added feature")
+- Don't end subject line with a period
+- Include breaking changes in footer: `BREAKING CHANGE: description`
+- Reference issues: `Closes #123`
+
+## Examples
+
+### Good commits
+```
+feat(auth): add OAuth2 login support
+
+Implements Google and GitHub OAuth providers with secure token handling
+and automatic user profile creation.
+
+Closes #456
+```
+
+```
+fix: resolve memory leak in image processing
+
+The canvas context was not being properly disposed after image
+manipulation, causing memory to accumulate over time.
+```
+
+### Bad commits
+```
+// DON'T DO THIS
+"fixed stuff"
+"Update README.md"
+"WIP"
+"asdf"
+```
+
+## Optional Scopes
+
+- `api`: Changes to API endpoints
+- `ui`: User interface changes
+- `db`: Database schema changes
+- `auth`: Authentication/authorization changes
+- `deps`: Dependency updates
+
+## Message Guidelines
+
+- Subject line: max 50 characters, imperative mood
+- Body: max 72 characters per line, explain WHAT and WHY
+- Reference issues with "Fixes #123" or "Closes #123"
+- Use breaking change footer for breaking changes
+- Include co-authors when pair programming
+
+<example>
+feat(auth): add OAuth2 integration with Google
+
+Implements Google OAuth2 authentication flow for faster user onboarding.
+Users can now sign in with their Google accounts instead of creating
+new credentials.
+
+- Add Google OAuth2 strategy to Passport.js
+- Create OAuth callback route handler
+- Update user model to support OAuth accounts
+- Add environment variables for Google client configuration
+
+Fixes #234
+Co-authored-by: Jane Smith <jane@example.com>
+</example>
+
+<example type="invalid">
+fix: stuff
+
+Fixed some things that were broken. Also updated some files and added
+new functionality while fixing the original issue. Changed the database
+schema and updated documentation too.
+</example>
+
+## Breaking Changes
+
+For breaking changes, add `BREAKING CHANGE:` in the footer:
+
+```
+feat!: remove deprecated API endpoints
+
+BREAKING CHANGE: `/api/v1/users` endpoint removed, use `/api/v2/users` instead
+```

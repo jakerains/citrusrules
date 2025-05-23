@@ -3,3 +3,81 @@ description:
 globs:
 alwaysApply: false
 ---
+# Feature Development Standards
+
+## Core Requirements
+
+- Write unit tests BEFORE implementing features (TDD approach)
+- Create comprehensive JSDoc comments for all public APIs
+- Follow existing project naming conventions and file structure
+- Implement proper TypeScript types - never use `any`
+- Add error handling with meaningful error messages
+- Update relevant documentation (README, CHANGELOG, API docs)
+- Ensure accessibility compliance (WCAG 2.1 AA minimum)
+- Consider performance implications and add monitoring where needed
+
+## Testing Requirements
+
+- Unit test coverage: minimum 80% for new features
+- Integration tests for features with external dependencies
+- E2E tests for user-facing functionality
+- Performance tests for data-intensive operations
+
+## Documentation Requirements
+
+- Update README.md with feature usage examples
+- Add entry to CHANGELOG.md following semantic versioning
+- Create or update API documentation
+- Add inline code comments explaining complex business logic
+
+## Code Examples
+
+### Good: Comprehensive feature implementation
+
+```typescript
+export interface UserPreferences {
+  theme: 'light' | 'dark';
+  notifications: boolean;
+}
+
+/**
+ * Updates user preferences with validation and error handling
+ * @param userId - Unique identifier for the user
+ * @param preferences - Partial preferences to update
+ * @returns Promise resolving to updated preferences
+ * @throws {ValidationError} When preferences are invalid
+ * @throws {NotFoundError} When user doesn't exist
+ */
+export async function updateUserPreferences(
+  userId: string, 
+  preferences: Partial<UserPreferences>
+): Promise<UserPreferences> {
+  if (!userId) {
+    throw new ValidationError('User ID is required');
+  }
+  
+  try {
+    const user = await findUser(userId);
+    if (!user) {
+      throw new NotFoundError(`User ${userId} not found`);
+    }
+    
+    const updated = await user.updatePreferences(preferences);
+    return updated;
+  } catch (error) {
+    logger.error('Failed to update user preferences', { userId, error });
+    throw error;
+  }
+}
+```
+
+### Bad: Missing documentation, error handling, and proper types
+
+```typescript
+// DON'T DO THIS
+function updatePrefs(id, prefs): any {
+  const user = getUser(id);
+  user.prefs = prefs;
+  return user.prefs;
+}
+```
