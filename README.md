@@ -29,6 +29,13 @@ CitrusRules is a CLI tool that instantly downloads **professional coding standar
 - 🎨 **Customizable**: Easy to modify for your specific needs
 - 🌟 **Zero Config**: Works out of the box
 
+### 🆕 Latest Updates (v1.3.0)
+
+- ⚡ **Short Flags**: Use `-d` instead of `--development-workflow` for lightning-fast commands
+- 🧹 **Clean Package**: Only the latest working version available (no legacy confusion)
+- 🚀 **Enhanced CLI**: Improved help output and better error messages
+- 📦 **Lightweight**: Streamlined package with just the essentials
+
 ## 🚀 Quick Start
 
 ```bash
@@ -143,10 +150,14 @@ export async function getUser(id: string): Promise<User | null> {
 4. **✨ Code**: Get suggestions that follow your rules instantly!
 
 ```bash
-# Example workflow
-npx citrusrules --error-handling
+# ⚡ Example workflow (using short flags!)
+npx citrusrules -e
 # → Downloads error-handling.mdc to .cursor/rules/
 # → Cursor now suggests robust error handling patterns!
+
+# 🚀 Quick combo for full-stack development:
+npx citrusrules -d -e -p -a -c
+# → Comprehensive development standards in seconds!
 ```
 
 ## 💡 Why CitrusRules?
@@ -169,39 +180,53 @@ Each template includes examples and explanations to improve your team's coding s
 # Try it now! (creates a test directory)
 mkdir my-awesome-project && cd my-awesome-project
 
-# Get the core development templates
-npx citrusrules --development-workflow --error-handling --performance
+# ⚡ Get the core development templates (using short flags!)
+npx citrusrules -d -e -p
 
-# Add security and testing standards
-npx citrusrules --security --testing-strategy
+# 🔒 Add security and testing standards
+npx citrusrules -s -t
 
-# Include architecture templates
-npx citrusrules --api-design --component-standards
+# 🎨 Include architecture templates
+npx citrusrules -a -c -b
+
+# 🚀 Or get everything at once:
+npx citrusrules -d -e -p -s -a -c -b -o -m -t
 
 ls .cursor/rules/
-# → development-workflow.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc
+# → development-workflow.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc  db-best-practices.mdc  devops-ci-cd.mdc  mobile-standards.mdc
 
 # Now open this project in Cursor and see the magic! ✨
 ```
 
 ## 📦 Usage
 
-### Option 1: NPX (Recommended)
+### Option 1: NPX (Recommended) ⚡
 ```bash
+# Use short flags for quick access:
+npx citrusrules -d    # development workflow
+npx citrusrules -e    # error handling
+npx citrusrules -p    # performance
+
+# Or combine multiple:
+npx citrusrules -d -e -p -s
+
+# See all options:
 npx citrusrules --help
 ```
 
-### Option 2: Global Access
+### Option 2: Global Install 🌍
 ```bash
 npm install -g citrusrules
-citrusrules --performance
+citrusrules -p -s     # performance + security
 ```
 
-### Option 3: Project Scripts
+### Option 3: Project Development 📁
 ```bash
 npm install --save-dev citrusrules
-npx citrusrules --error-handling
+npx citrusrules -e -t  # error handling + testing
 ```
+
+> **✨ Latest Version**: We maintain only the latest version (1.3.0) on npm for the cleanest experience. No legacy issues or confusing old versions!
 
 ## 🤝 Contributing
 
@@ -262,6 +287,8 @@ alwaysApply: false              # Whether to apply everywhere
 ## 🗺️ Roadmap
 
 ### ✅ Recently Completed
+- [x] ⚡ **Short Flag Support**: Single-character flags for all commands (-d, -e, -p, etc.)
+- [x] 🧹 **Package Cleanup**: Removed legacy versions for cleaner user experience
 - [x] 🎨 React/Vue component standards
 - [x] 🗄️ Database query best practices  
 - [x] 🧪 Testing strategy templates
@@ -279,6 +306,12 @@ alwaysApply: false              # Whether to apply everywhere
 - [ ] 🎨 Design system integration standards
 
 ## ❓ FAQ
+
+<details>
+<summary><strong>Q: Can I use both short and long flags?</strong></summary>
+<br>
+A: Yes! Use `-d` for quick commands or `--development-workflow` if you prefer explicit names. Both work identically.
+</details>
 
 <details>
 <summary><strong>Q: Will this slow down Cursor?</strong></summary>
