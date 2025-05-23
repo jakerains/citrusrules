@@ -1,0 +1,232 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Guidelines for creating consistent .mdc template files in the CitrusRules project templates folder
+globs: ["templates/*.mdc"]
+alwaysApply: false
+---
+
+# CitrusRules Template Creation Guide
+
+This rule provides consistent guidelines for creating new `.mdc` template files in the `templates/` folder of the CitrusRules project.
+
+## Template File Structure
+
+Every `.mdc` template file must follow this exact structure:
+
+### 1. YAML Metadata Block (Required)
+```yaml
+---
+description: Brief description of what this rule does (one sentence, no period)
+globs: ["**/*.{ext1,ext2}"]  # File patterns this rule applies to
+alwaysApply: false            # Usually false for templates
+---
+```
+
+### 2. Rule Content Structure
+```markdown
+# Rule Title (use the template name in PascalCase)
+
+Brief introduction paragraph explaining the rule's purpose and scope.
+
+## Core Principles/Guidelines
+
+- Use bullet points for key principles
+- Keep each point actionable and clear
+- Focus on "what" and "why"
+
+## Implementation Patterns/Examples
+
+### Subsection Title
+```language
+// Code examples with clear comments
+// Show both good and bad patterns when helpful
+```
+
+## Checklist (if applicable)
+
+For every [feature/implementation], ensure:
+- [ ] Specific requirement 1
+- [ ] Specific requirement 2
+- [ ] Specific requirement 3
+
+## Anti-Patterns to Avoid (if applicable)
+
+Never implement these patterns:
+```language
+// ❌ DON'T: Bad example with explanation
+// ✅ DO: Good alternative
+```
+```
+
+## Template File Naming Conventions
+
+- Use kebab-case for file names: `error-handling.mdc`, `api-design.mdc`
+- Name should be descriptive and match the CLI flag
+- Avoid abbreviations unless universally understood
+
+## Required Metadata Fields
+
+### `description` field:
+- One clear sentence describing the rule's purpose
+- No ending period
+- Focus on what the rule enforces/provides
+- Examples:
+  - ✅ "Comprehensive development workflow with structured task tracking and progress management"
+  - ✅ "Guidelines for building maintainable frontend components"
+  - ❌ "This rule helps with error handling." (too vague, has period)
+
+### `globs` field:
+- Array of file patterns where the rule should apply
+- Use specific file extensions relevant to the rule
+- Common patterns:
+  - `["**/*.{js,ts,tsx,jsx}"]` - JavaScript/TypeScript files
+  - `["**/*.{py}"]` - Python files
+  - `["**/*.{sql}"]` - SQL files
+  - `["**/*.{yml,yaml}"]` - YAML files
+  - `[]` - Empty array if not file-specific
+
+### `alwaysApply` field:
+- Always set to `false` for CitrusRules templates
+- Templates are meant to be selectively applied
+
+## Content Guidelines
+
+### Rule Titles
+- Use descriptive titles that match the template purpose
+- Examples: "Error Handling Standards", "Performance Optimization Standards"
+
+### Section Organization
+1. **Introduction**: Brief overview of the rule's scope and importance
+2. **Core Principles**: High-level guidelines and philosophy
+3. **Implementation Patterns**: Concrete code examples and templates
+4. **Checklists**: Actionable verification steps
+5. **Anti-Patterns**: What to avoid with examples
+
+### Code Examples
+- Use appropriate syntax highlighting
+- Include comments explaining the "why" not just the "what"
+- Show both good and bad examples when helpful
+- Use realistic, practical examples
+- Prefer TypeScript for JavaScript examples
+
+### Writing Style
+- Use active voice and clear, direct language
+- Keep sentences concise and actionable
+- Use consistent terminology throughout
+- Include context for why guidelines matter
+
+## CLI Integration Requirements
+
+When creating a new template, also update:
+
+1. **`bin/cli.js`**: Add the new option with both short and long flags
+2. **`README.md`**: Add to the templates table and command examples
+3. **Package metadata**: Ensure template is included in package
+
+### CLI Flag Naming
+- Long flag: `--template-name` (kebab-case)
+- Short flag: Single letter (check existing flags to avoid conflicts)
+- Example: `--error-handling` / `-e`
+
+## Quality Standards
+
+### Technical Accuracy
+- All code examples must be syntactically correct
+- Use current best practices and modern language features
+- Include proper error handling in examples
+- Validate against real-world usage patterns
+
+### Completeness
+- Cover the most common use cases for the domain
+- Include both basic and advanced scenarios
+- Provide sufficient context for developers to understand "why"
+- Include integration guidance where relevant
+
+### Maintainability
+- Use patterns that will remain relevant over time
+- Avoid overly specific framework versions or dependencies
+- Focus on principles that transcend specific tools
+
+## Example Template Structure
+
+```markdown
+---
+description: Secure coding practices and vulnerability prevention
+globs: ["**/*.{js,ts,py,java,go}"]
+alwaysApply: false
+---
+
+# Security Standards
+
+Implement security-first development practices with comprehensive threat protection and secure coding patterns.
+
+## Core Security Principles
+
+- Always validate and sanitize user input
+- Use parameterized queries to prevent SQL injection
+- Implement proper authentication and authorization
+- Apply the principle of least privilege
+
+## Implementation Patterns
+
+### Input Validation Template
+```typescript
+// Comprehensive input validation example
+import { z } from 'zod';
+
+const UserInputSchema = z.object({
+  email: z.string().email(),
+  age: z.number().min(13).max(120)
+});
+
+export function validateUserInput(input: unknown) {
+  return UserInputSchema.parse(input);
+}
+```
+
+## Security Checklist
+
+For every feature implementation, ensure:
+- [ ] All user inputs are validated
+- [ ] Sensitive data is encrypted
+- [ ] Authentication is properly implemented
+- [ ] Authorization checks are in place
+
+## Anti-Patterns to Avoid
+
+```typescript
+// ❌ DON'T: Direct string interpolation in SQL
+const query = `SELECT * FROM users WHERE id = ${userId}`;
+
+// ✅ DO: Use parameterized queries
+const query = 'SELECT * FROM users WHERE id = $1';
+```
+```
+
+## Template Testing
+
+Before submitting a new template:
+
+1. **Validate YAML**: Ensure metadata parses correctly
+2. **Test CLI Integration**: Verify the template downloads properly
+3. **Review Examples**: Ensure all code examples are correct
+4. **Check Completeness**: Verify all major use cases are covered
+5. **Proofread**: Check for typos and consistency
+
+## Integration with CitrusRules CLI
+
+Templates should integrate seamlessly with the CLI workflow:
+
+```bash
+# User runs command
+npx citrusrules --your-template-name
+
+# Template is downloaded to .cursor/rules/
+# User can immediately use the template in Cursor
+```
+
+This ensures every CitrusRules template provides immediate value and follows consistent quality standards.

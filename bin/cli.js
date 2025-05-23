@@ -19,7 +19,8 @@ program
   .option('-b, --db-best-practices', 'Fetch db-best-practices.mdc template')
   .option('-o, --devops-ci-cd', 'Fetch devops-ci-cd.mdc template')
   .option('-m, --mobile-standards', 'Fetch mobile-standards.mdc template')
-  .option('-t, --testing-strategy', 'Fetch testing-strategy.mdc template');
+  .option('-t, --testing-strategy', 'Fetch testing-strategy.mdc template')
+  .option('-u, --uv-python-projects', 'Fetch uv-python-projects.mdc template');
 
 program.parse(process.argv);
 const opts = program.opts();

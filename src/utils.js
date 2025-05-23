@@ -14,7 +14,8 @@ function getTemplateFilename(name) {
     'dbBestPractices': 'db-best-practices',
     'devopsCiCd': 'devops-ci-cd',
     'mobileStandards': 'mobile-standards',
-    'testingStrategy': 'testing-strategy'
+    'testingStrategy': 'testing-strategy',
+    'uvPythonProjects': 'uv-python-projects'
   };
   return mapping[name] || name;
 }

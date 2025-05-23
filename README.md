@@ -63,6 +63,10 @@ npx citrusrules --api-design
 # 🎨 Component development standards
 npx citrusrules --component-standards
 # or: npx citrusrules -c
+
+# 🐍 Modern Python project management with UV
+npx citrusrules --uv-python-projects
+# or: npx citrusrules -u
 ```
 
 ### 🚀 All Available Commands
@@ -79,6 +83,7 @@ npx citrusrules --component-standards
 | `-o` | `--devops-ci-cd` | 🔧 DevOps and CI/CD pipeline standards |
 | `-m` | `--mobile-standards` | 📱 Mobile development best practices |
 | `-t` | `--testing-strategy` | 🧪 Comprehensive testing methodologies |
+| `-u` | `--uv-python-projects` | 🐍 Modern Python project management with UV |
 
 ## 📋 Available Templates
 
@@ -88,6 +93,7 @@ npx citrusrules --component-standards
 | 📊 **development-workflow** | Comprehensive development workflow with task tracking | Research, planning, progress tracking |
 | 🛡️ **error-handling** | Robust error handling patterns and recovery | Custom errors, async safety, fault tolerance |
 | ⚡ **performance** | Performance optimization standards | Algorithm efficiency, React optimization, monitoring |
+| 🐍 **uv-python-projects** | Modern Python project management using UV | Fast dependency resolution, lockfiles, virtual environments |
 
 ### 🔒 Security & Quality Templates  
 | Template | Description | Best For |
@@ -190,10 +196,10 @@ npx citrusrules -s -t
 npx citrusrules -a -c -b
 
 # 🚀 Or get everything at once:
-npx citrusrules -d -e -p -s -a -c -b -o -m -t
+npx citrusrules -d -e -p -s -a -c -b -o -m -t -u
 
 ls .cursor/rules/
-# → development-workflow.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc  db-best-practices.mdc  devops-ci-cd.mdc  mobile-standards.mdc
+# → development-workflow.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc  db-best-practices.mdc  devops-ci-cd.mdc  mobile-standards.mdc  uv-python-projects.mdc
 
 # Now open this project in Cursor and see the magic! ✨
 ```
@@ -287,6 +293,7 @@ alwaysApply: false              # Whether to apply everywhere
 ## 🗺️ Roadmap
 
 ### ✅ Recently Completed
+- [x] 🐍 **UV Python Projects**: Modern Python project management with UV for 10-100x faster workflows
 - [x] ⚡ **Short Flag Support**: Single-character flags for all commands (-d, -e, -p, etc.)
 - [x] 🧹 **Package Cleanup**: Removed legacy versions for cleaner user experience
 - [x] 🎨 React/Vue component standards
