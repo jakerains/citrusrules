@@ -11,6 +11,7 @@ program
 
 program
   .option('--feature', 'Fetch feature.mdc template')
+  .option('--feature-tracker', 'Fetch feature-tracker.mdc template')
   .option('--typescript-strict', 'Fetch typescript-strict.mdc template')
   .option('--git-commit', 'Fetch git-commit.mdc template')
   .option('--security', 'Fetch security.mdc template');
