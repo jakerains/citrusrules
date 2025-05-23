@@ -1,5 +1,161 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+---
+name: FeatureImplementationTracker
+type: Agent Requested
+description: Research, plan, implement, and track progress on new features with structured task lists and progress tracking based on Claude Code methodologies
+glob: **/*.{js,ts,tsx,jsx,py,java,go,rb,php}
+priority: high
+---
+
+# Feature Implementation Assistant
+
+As your development assistant, I'll help build new features or components by following a structured approach based on advanced AI planning methodologies. This rule helps maintain consistent implementation workflows and thorough documentation.
+
+## Planning Strategy
+
+I'll use extended thinking mode for complex planning. When you want more thorough analysis, prompt me with:
+- "think" for basic planning (4,000 token budget)
+- "think hard" for deeper analysis (10,000 token budget)
+- "think harder" for extensive planning (20,000 token budget)
+- "ultrathink" for maximum planning depth (30,000+ token budget)
+
+## 1. Research Phase
+
+- Analyze the current codebase architecture and dependencies
+- Research the latest best practices, libraries, and approaches for the requested feature
+- Provide a summary of findings with links to relevant documentation
+- Compare implementation approaches with clear pros/cons tables
+- Consider:
+  - Compatibility with existing architecture
+  - Performance implications
+  - Scalability concerns
+  - Maintainability impacts
+  - Security considerations
+
+## 2. Planning Phase
+
+- Create a detailed markdown file named `[feature-name]-implementation-plan.md`
+- Break implementation into discrete, sequential tasks with clear dependencies
+- Perform complexity analysis for each task:
+  - Low: Simple implementation with minimal dependencies
+  - Medium: Moderate complexity with some dependencies
+  - High: Complex implementation with significant dependencies or architectural impacts
+  - Critical: Tasks that affect core functionality or require special attention
+- Include detailed acceptance criteria for each task
+- Create task dependency graph to visualize implementation flow
+- Plan for tests at each implementation stage (unit, integration, E2E)
+- Identify potential failure points and mitigation strategies
+
+## 3. Implementation Phase
+
+- Work through tasks sequentially respecting dependencies
+- For each task implementation:
+  1. Review task requirements and acceptance criteria
+  2. Implement the code required
+  3. Verify implementation meets requirements
+  4. Write tests to validate functionality
+  5. Document any architectural decisions or patterns used
+- Mark completed tasks with ✅
+- Document deviations from the original plan with reasoning
+- Re-evaluate remaining tasks after each major milestone
+- Address edge cases and error handling proactively
+
+## 4. Verification & Testing
+
+- Generate appropriate tests based on task requirements:
+  - Unit tests for isolated functionality
+  - Integration tests for component interactions
+  - E2E tests for critical user flows
+- Verify each component individually before integration
+- Check for performance impacts and optimization opportunities
+- Ensure error handling is comprehensive
+- Validate against the original acceptance criteria
+
+## 5. Progress Tracking
+
+- Track overall progress as a percentage complete
+- Identify any tasks that took longer than expected and analyze why
+- Document newly discovered tasks during implementation
+- Maintain a timestamped implementation history
+- Capture lessons learned for future reference
+- Regularly update the implementation plan with current status
+
+## Task Structure Template
+
+```markdown
+# [Feature Name] Implementation Plan
+
+## Overview
+[Brief description of the feature and its purpose]
+
+## Research Findings
+[Summary of research conducted and relevant findings]
+
+## Implementation Strategy
+[High-level approach and architectural decisions]
+
+## Tasks
+
+### 1. Setup & Preparation
+- [ ] Task 1.1: [Description] (Complexity: Low/Medium/High/Critical)
+  - Acceptance criteria: [Specific criteria]
+  - Dependencies: [Any prerequisite tasks]
+  - Estimated time: [Time estimate]
+  - Implementation notes: [Notes]
+  - Test strategy: [Test approach]
+
+### 2. Core Implementation
+- [ ] Task 2.1: [Description] (Complexity: Low/Medium/High/Critical)
+  - Acceptance criteria: [Specific criteria]
+  - Dependencies: [Any prerequisite tasks]
+  - Estimated time: [Time estimate]
+  - Implementation notes: [Notes]
+  - Test strategy: [Test approach]
+
+### 3. Testing & Refinement
+- [ ] Task 3.1: [Description] (Complexity: Low/Medium/High/Critical)
+  - Acceptance criteria: [Specific criteria]
+  - Dependencies: [Any prerequisite tasks]
+  - Estimated time: [Time estimate]
+  - Implementation notes: [Notes]
+
+### 4. Documentation & Integration
+- [ ] Task 4.1: [Description] (Complexity: Low/Medium/High/Critical)
+  - Acceptance criteria: [Specific criteria]
+  - Dependencies: [Any prerequisite tasks]
+  - Estimated time: [Time estimate]
+  - Implementation notes: [Notes]
+
+## Progress Tracking
+- Started: [Date/Time]
+- Current Status: 0% complete
+- Last Updated: [Date/Time]
+- Blockers: [Any current blockers]
+- Next Action: [Next immediate action]
+
+## Implementation History
+[This section will be updated as tasks are completed]
+
+## Lessons Learned
+[To be populated during implementation]
+```
+
+## Task Update Protocol
+
+After completing each task, I'll:
+1. Mark the task as completed with ✅
+2. Add detailed implementation notes including:
+   - Approach taken
+   - Any challenges encountered
+   - Architectural decisions made
+   - Links to relevant documentation
+3. Update the progress percentage
+4. Add a timestamped entry to the implementation history
+5. Identify and recommend the next task to tackle
+6. Update any dependencies affected by this task
+
+This structured approach ensures consistent, documented, and thoroughly tested feature implementations with clear progress tracking and full visibility into the development process.
