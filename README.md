@@ -66,6 +66,7 @@ npx citrusrules --component-standards
 
 # 📋 Advanced TODO tracking system for feature implementation
 npx citrusrules --TODO-tracking
+# or: npx citrusrules -t
 
 # 🐍 Modern Python project management with UV
 npx citrusrules --uv-python-projects
@@ -85,8 +86,8 @@ npx citrusrules --uv-python-projects
 | `-b` | `--db-best-practices` | 🗄️ Database query and schema best practices |
 | `-o` | `--devops-ci-cd` | 🔧 DevOps and CI/CD pipeline standards |
 | `-m` | `--mobile-standards` | 📱 Mobile development best practices |
-| `-t` | `--testing-strategy` | 🧪 Comprehensive testing methodologies |
-| | `--TODO-tracking` | 📋 Advanced TODO tracking system for feature implementation |
+| `-t` | `--TODO-tracking` | 📋 Advanced TODO tracking system for feature implementation |
+| `-r` | `--testing-strategy` | 🧪 Comprehensive testing methodologies |
 | `-u` | `--uv-python-projects` | 🐍 Modern Python project management with UV |
 
 ## 📋 Available Templates
@@ -195,13 +196,13 @@ mkdir my-awesome-project && cd my-awesome-project
 npx citrusrules -d -e -p
 
 # 🔒 Add security and testing standards
-npx citrusrules -s -t
+npx citrusrules -s -r
 
 # 🎨 Include architecture templates
 npx citrusrules -a -c -b
 
 # 🚀 Or get everything at once:
-npx citrusrules -d -e -p -s -a -c -b -o -m -t -u
+npx citrusrules -d -e -p -s -a -c -b -o -m -t -r -u
 
 ls .cursor/rules/
 # → development-workflow.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc  db-best-practices.mdc  devops-ci-cd.mdc  mobile-standards.mdc  uv-python-projects.mdc
@@ -234,7 +235,7 @@ citrusrules -p -s     # performance + security
 ### Option 3: Project Development 📁
 ```bash
 npm install --save-dev citrusrules
-npx citrusrules -e -t  # error handling + testing
+npx citrusrules -e -r  # error handling + testing
 ```
 
 > **✨ Latest Version**: We maintain only the latest version (1.3.0) on npm for the cleanest experience. No legacy issues or confusing old versions!
