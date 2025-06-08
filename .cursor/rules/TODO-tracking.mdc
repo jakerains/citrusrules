@@ -1,0 +1,247 @@
+---
+description: A system for creating and maintaining TODO files that document the step-by-step process of implementing features, similar to Claude Code's checkpoint system. Start with /TODO mention.
+globs: 
+alwaysApply: false
+---
+---
+description: TODO Tracking System - Automatically create and maintain TODO files for features and tasks
+globs: 
+  - "**/*.{js,jsx,ts,tsx,py,go,rs,java,c,cpp,cs,rb,php,swift,kt,scala,r,m,dart,lua,jl,ex,clj,hs,ml,fs,v,vb,sql,sh,ps1,yaml,yml,json,xml,html,css,scss,sass,less,md,mdx,vue,svelte}"
+  - "**/TODO/*.md"
+---
+
+# TODO Tracking System
+
+A system for creating and maintaining TODO files that document the step-by-step process of implementing features, similar to Claude Code's checkpoint system.
+
+<rule>
+name: todo_tracking_system
+description: Automatically creates and maintains TODO files for tracking feature implementation with checkpoints when /TODO is mentioned
+type: Agent Requested
+
+content: |
+  ## TODO Tracking System Instructions
+
+  When /TODO is detected or this rule is relevant, follow these guidelines:
+
+  ### 1. TODO File Creation
+  When starting a new feature or task:
+  - Create a file in `./TODO/` directory named: `YYYY-MM-DD_<task-name>.md`
+  - Use kebab-case for task names (e.g., `2024-01-15_user-authentication-system.md`)
+  - If TODO directory doesn't exist, create it first
+
+  ### 2. TODO File Structure
+  Each TODO file should follow this template:
+
+  ```markdown
+  # TODO: [Task Name]
+
+  **Created:** [Date]
+  **Status:** 🔄 In Progress | ✅ Complete | ⏸️ Paused | ❌ Blocked
+  **Priority:** 🔴 High | 🟡 Medium | 🟢 Low
+  **Related Files:** [List key files that will be modified]
+  **Issue/Ticket:** #[number] (if applicable)
+
+  ## Overview
+  [Brief description of what we're implementing]
+
+  ## Success Criteria
+  - [ ] [Specific measurable outcome 1]
+  - [ ] [Specific measurable outcome 2]
+  - [ ] [Specific measurable outcome 3]
+
+  ## Dependencies
+  ```
+  [Feature Name]
+  ├── [Component 1] ✅
+  ├── [Component 2] 🔄
+  │   ├── [Subcomponent 2.1] ✅
+  │   └── [Subcomponent 2.2] ⏳
+  └── [Component 3] ⏳
+  ```
+
+  ## Implementation Steps
+
+  ### Step 1: [Step Name] ✅
+  **Status:** Complete
+  What we did:
+  - [Action taken]
+  - [Files modified]
+  - [Key decisions made]
+
+  ```[language]
+  // Code snippet showing the implementation
+  ```
+
+  **✓ Checkpoint:** [What works at this point]
+  **Commit:** `[hash]` - "[commit message]"
+
+  ### Step 2: [Step Name] 🔄
+  **Status:** In Progress
+
+  What we're doing:
+  - [Current action]
+  - [Expected outcome]
+
+  **Blockers:** [Any issues encountered]
+
+  ### Step 3: [Step Name] ⏳
+  **Status:** Pending
+
+  What we need to do:
+  - [Planned action]
+  - [Dependencies]
+
+  ## Error Log
+  ### Error 1: [Date]
+  **Error:** `[Error message]`
+  **Context:** [Where it occurred]
+  **Solution:** [How it was fixed]
+  **Prevention:** [How to avoid in future]
+
+  ## Notes & Decisions
+  - **[Date]:** [Important decision or note]
+  - **[Date]:** [Why we chose approach A over B]
+  - **[Date]:** [Architectural decision]
+
+  ## Code Snippets & Solutions
+  ### [Problem/Feature Name]
+  ```[language]
+  // Reusable code solution
+  ```
+  **Why this works:** [Explanation]
+
+  ## Next Session
+  When returning to this task:
+  1. [First thing to check/do]
+  2. [Second thing to check/do]
+  3. [Continue from: specific file and line]
+
+  ## Pre-Completion Checklist
+  - [ ] All tests passing
+  - [ ] Code reviewed / AI-reviewed
+  - [ ] Documentation updated
+  - [ ] Edge cases handled
+  - [ ] Error handling implemented
+  - [ ] Security considerations addressed
+
+  ## Resources
+  - [Relevant documentation links]
+  - [Reference implementations]
+  - [Stack Overflow solutions that helped]
+  ```
+
+  ### 3. During Implementation
+  As you work through the task:
+
+  1. **Update status in real-time**:
+     - Mark steps as ✅ Complete, 🔄 In Progress, ❌ Blocked, or ⏳ Pending
+     - Remove time tracking - we work at AI speed!
+
+  2. **Document decisions**:
+     - Why did we choose approach A over B?
+     - What trade-offs did we make?
+     - What assumptions are we making?
+
+  3. **Create checkpoints**:
+     - After each significant step, note what's working
+     - Include git commit hashes for major checkpoints
+     - This helps with debugging and rolling back if needed
+
+  4. **Track blockers immediately**:
+     - Don't wait to document what's blocking progress
+     - Include full error messages and stack traces
+     - Document the solution when found
+
+  ### 4. Checkpoint System
+  Similar to Claude Code's approach:
+
+  - **Minor Checkpoint** (every 2-3 small changes):
+    ```markdown
+    **✓ Checkpoint:** [What's working now]
+    ```
+
+  - **Major Checkpoint** (significant feature complete):
+    ```markdown
+    **✅ MAJOR CHECKPOINT:**
+    - What's implemented: [List]
+    - What's tested: [List]  
+    - What's left: [List]
+    - Commit: `[hash]` - "[message]"
+    - Rollback point: [description]
+    ```
+
+  ### 5. Error Documentation
+  Track errors and solutions for future reference:
+  ```markdown
+  ### Error: [Error name]
+  **When:** [What you were doing]
+  **Error:** `[Full error message]`
+  **Cause:** [Root cause]
+  **Fix:** [Solution implemented]
+  **Lesson:** [What to remember]
+  ```
+
+  ### 6. Session Management
+  At the end of each coding session:
+
+  1. Update the "Next Session" section with specific entry points
+  2. Ensure all in-progress steps have current status
+  3. Add a session summary in Notes & Decisions
+  4. Commit the TODO file with your code changes
+
+  ### 7. Completion
+  When the task is complete:
+  1. Change top-level status to ✅ Complete
+  2. Add completion date
+  3. Run through the pre-completion checklist
+  4. Write a brief retrospective in Notes & Decisions
+  5. Move to `COMPLETED/` subfolder with date prefix
+
+  ### 8. Best Practices
+  - **One TODO file per feature/task** - Don't mix unrelated work
+  - **Update in real-time** - Don't wait until the end
+  - **Be specific** - "Fixed bug" vs "Fixed null pointer exception in UserService.authenticate() when email is undefined"
+  - **Include code snippets** - Especially for complex logic or clever solutions
+  - **Link related TODOs** - If tasks are connected, cross-reference them
+  - **Screenshot UI states** - For visual features, paste screenshots at checkpoints
+
+  ### 9. Quick Commands
+  When you mention /TODO, I'll help you:
+  - `/TODO create [task-name]` - Create a new TODO file
+  - `/TODO update` - Update the current TODO with progress
+  - `/TODO checkpoint` - Create a checkpoint in the current TODO
+  - `/TODO complete` - Mark current TODO as complete
+  - `/TODO list` - Show all active TODOs
+  - `/TODO error` - Document an error and solution
+  - `/TODO decision [topic]` - Document an architectural decision
+
+  ### 10. AI-Specific Enhancements
+  Since we're working at AI speed:
+  - Focus on decision documentation over time tracking
+  - Capture generated code patterns for reuse
+  - Document prompts that worked well
+  - Track which approaches the AI suggested vs implemented
+  - Note any AI limitations encountered and workarounds
+
+examples:
+  - input: "@todo_tracking_system create todo user-authentication"
+    output: "Created TODO file: ./TODO/2024-01-15_user-authentication.md with template structure"
+  
+  - input: "@todo_tracking_system checkpoint"
+    output: "Added checkpoint to current TODO with working features documented"
+
+  - input: "@todo_tracking_system update progress on step 2"
+    output: "Updated Step 2 status and added current implementation details"
+
+related_rules:
+  - git_commit_conventions
+  - code_documentation
+  - project_structure
+
+metadata:
+  version: 1.0
+  author: cursor-rules
+  tags: [productivity, documentation, project-management]
+</rule>
+

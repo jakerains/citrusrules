@@ -64,6 +64,9 @@ npx citrusrules --api-design
 npx citrusrules --component-standards
 # or: npx citrusrules -c
 
+# 📋 Advanced TODO tracking system for feature implementation
+npx citrusrules --TODO-tracking
+
 # 🐍 Modern Python project management with UV
 npx citrusrules --uv-python-projects
 # or: npx citrusrules -u
@@ -83,6 +86,7 @@ npx citrusrules --uv-python-projects
 | `-o` | `--devops-ci-cd` | 🔧 DevOps and CI/CD pipeline standards |
 | `-m` | `--mobile-standards` | 📱 Mobile development best practices |
 | `-t` | `--testing-strategy` | 🧪 Comprehensive testing methodologies |
+| | `--TODO-tracking` | 📋 Advanced TODO tracking system for feature implementation |
 | `-u` | `--uv-python-projects` | 🐍 Modern Python project management with UV |
 
 ## 📋 Available Templates
@@ -100,6 +104,7 @@ npx citrusrules --uv-python-projects
 |----------|-------------|----------|
 | 🔒 **security** | Security best practices and vulnerability prevention | XSS protection, input validation, secure coding |
 | 🧪 **testing-strategy** | Comprehensive testing methodologies | Unit testing, integration testing, TDD practices |
+| 📋 **TODO-tracking** | Advanced TODO tracking system for feature implementation | Project management, task tracking, feature development |
 
 ### 🎨 Architecture & Design Templates
 | Template | Description | Best For |
