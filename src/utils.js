@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { TEMPLATE_URL_BASE } from './config.js';
 
 // Map camelCase option names to kebab-case filenames
-function getTemplateFilename(name) {
+export function getTemplateFilename(name) {
   const mapping = {
     'developmentWorkflow': 'development-workflow',
     'errorHandling': 'error-handling',
@@ -15,6 +15,7 @@ function getTemplateFilename(name) {
     'devopsCiCd': 'devops-ci-cd',
     'mobileStandards': 'mobile-standards',
     'testingStrategy': 'testing-strategy',
+    'TODOTracking': 'TODO-tracking',
     'uvPythonProjects': 'uv-python-projects'
   };
   return mapping[name] || name;
