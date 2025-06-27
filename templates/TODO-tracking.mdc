@@ -24,6 +24,16 @@ content: |
 
   When /TODO is detected or this rule is relevant, follow these guidelines:
 
+  ### 0. Get Current Date/Time (FIRST STEP)
+  **ALWAYS start by running the date command to get current date/time for proper file naming:**
+  
+  ```bash
+  date
+  ```
+  
+  Use the output to determine the correct `YYYY-MM-DD` format for the TODO filename.
+  Example output: `Sat Jun 8 09:15:23 PDT 2024` → Use `2024-06-08` for filename.
+
   ### 1. TODO File Creation
   When starting a new feature or task:
   - Create a file in `./TODO/` directory named: `YYYY-MM-DD_<task-name>.md`
@@ -208,7 +218,7 @@ content: |
 
   ### 9. Quick Commands
   When you mention /TODO, I'll help you:
-  - `/TODO create [task-name]` - Create a new TODO file
+  - `/TODO create [task-name]` - Create a new TODO file (will run `date` command first for proper naming)
   - `/TODO update` - Update the current TODO with progress
   - `/TODO checkpoint` - Create a checkpoint in the current TODO
   - `/TODO complete` - Mark current TODO as complete
@@ -226,7 +236,7 @@ content: |
 
 examples:
   - input: "@todo_tracking_system create todo user-authentication"
-    output: "Created TODO file: ./TODO/2024-01-15_user-authentication.md with template structure"
+    output: "Running `date` command first... Current date: Mon Jan 15 10:30:45 PST 2024. Created TODO file: ./TODO/2024-01-15_user-authentication.md with template structure"
   
   - input: "@todo_tracking_system checkpoint"
     output: "Added checkpoint to current TODO with working features documented"
