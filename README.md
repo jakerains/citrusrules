@@ -85,7 +85,7 @@ npx citrusrules --uv-python-projects
 | `-c` | `--component-standards` | 🎨 React/Vue component development standards |
 | `-b` | `--db-best-practices` | 🗄️ Database query and schema best practices |
 | `-o` | `--devops-ci-cd` | 🔧 DevOps and CI/CD pipeline standards |
-| `-m` | `--mobile-standards` | 📱 Mobile development best practices |
+| `-m` | `--mobile-standards` | 📱 Comprehensive Expo & React Native 2025 standards |
 | `-t` | `--TODO-tracking` | 📋 Advanced TODO tracking system for feature implementation |
 | `-r` | `--testing-strategy` | 🧪 Comprehensive testing methodologies |
 | `-u` | `--uv-python-projects` | 🐍 Modern Python project management with UV |
@@ -118,7 +118,7 @@ npx citrusrules --uv-python-projects
 | Template | Description | Best For |
 |----------|-------------|----------|
 | 🔧 **devops-ci-cd** | DevOps and CI/CD pipeline standards | Deployment, automation, infrastructure as code |
-| 📱 **mobile-standards** | Mobile development best practices | Performance, UX patterns, platform guidelines |
+| 📱 **mobile-standards** | Comprehensive Expo & React Native 2025 standards | SDK 52+, performance, testing, security, modern architecture |
 
 ## 🎯 Examples
 
