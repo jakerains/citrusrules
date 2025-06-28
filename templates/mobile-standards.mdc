@@ -4,43 +4,458 @@ globs: ["**/*.{swift,kt,dart,js,tsx}"]
 alwaysApply: false
 ---
 ---
-name: MobileDevelopmentStandards
-type: Auto Attached
-description: Ensure quality and performance across iOS and Android apps
-glob: **/*.{swift,kt,dart,js,tsx}
-priority: high
+description: Comprehensive mobile development standards for Expo and React Native apps in 2025
+globs: ["**/*.{js,jsx,ts,tsx}", "**/app.json", "**/expo-module.config.json"]
+alwaysApply: false
 ---
 
-# Mobile Development Standards
+# Mobile Development Standards - Expo & React Native 2025
 
-Apply these practices when building mobile apps.
+Apply these modern best practices when building cross-platform mobile apps with Expo SDK 52+ and React Native.
 
-## Architecture
+## 🏗️ Architecture & Project Structure
 
-- Separate business logic from UI components.
-- Use dependency injection for testability.
-- Keep navigation flows well defined.
+### Modular Folder Structure
+Organize your Expo project for scalability and maintainability:
 
-## Performance
+```
+project/
+├── app/                    # Expo Router screens
+│   ├── (auth)/            # Authentication flow
+│   ├── (tabs)/            # Tab navigation
+│   └── _layout.tsx        # Root layout
+├── components/            # Reusable UI components
+│   ├── ui/               # Presentational components
+│   └── features/         # Feature-specific components
+├── modules/              # Feature modules
+│   ├── auth/            # Authentication module
+│   ├── user/            # User management
+│   └── payment/         # Payment processing
+├── services/            # API and external services
+├── hooks/               # Custom React hooks
+├── utils/               # Utility functions
+├── constants/           # App constants
+└── assets/              # Images, fonts, etc.
+```
 
-- Minimize rendering work on the main thread.
-- Dispose of listeners and subscriptions properly.
-- Use profiling tools to detect bottlenecks.
+### Component Classification
+- **Presentational Components**: Stateless, UI-only components
+- **Container Components**: Stateful components handling business logic
+- **Screen Components**: Top-level components for navigation
 
-## UX Considerations
+```typescript
+// Presentational Component
+const Button = ({ onPress, title, variant }: ButtonProps) => (
+  <Pressable style={styles[variant]} onPress={onPress}>
+    <Text>{title}</Text>
+  </Pressable>
+);
 
-- Support accessibility features like screen readers.
-- Optimize for different screen sizes and orientations.
-- Keep touch targets large and consistent.
+// Container Component
+const UserProfileContainer = () => {
+  const { data, loading } = useUserProfile();
+  return <UserProfile user={data} loading={loading} />;
+};
+```
 
-```swift
-// Swift example snippet
-struct ContentView: View {
-  var body: some View {
-    Text("Hello, world!")
-      .padding()
+## ⚡ Performance Optimization
+
+### 1. Enable New Architecture (SDK 52+)
+```json
+// app.json
+{
+  "expo": {
+    "newArchEnabled": true,
+    "experiments": {
+      "reactCompiler": true
+    }
   }
 }
 ```
 
-Consistent standards lead to reliable and user-friendly mobile apps.
+### 2. Image Optimization
+- Use WebP format for better compression
+- Implement lazy loading for images
+- Pre-cache critical assets
+
+```typescript
+import { Image } from 'expo-image';
+import { useImage } from 'expo-image';
+
+// Preload images
+const image = useImage('https://example.com/image.webp', {
+  maxWidth: 800,
+  onError: (error, retry) => {
+    console.error('Loading failed:', error.message);
+  }
+});
+
+// Optimized image component
+<Image
+  source={image}
+  style={{ width: 200, height: 200 }}
+  contentFit="cover"
+  transition={1000}
+/>
+```
+
+### 3. List Performance
+Always use FlatList for dynamic lists:
+
+```typescript
+<FlatList
+  data={data}
+  renderItem={({ item }) => <ListItem {...item} />}
+  keyExtractor={(item) => item.id}
+  getItemLayout={(data, index) => ({
+    length: ITEM_HEIGHT,
+    offset: ITEM_HEIGHT * index,
+    index,
+  })}
+  initialNumToRender={10}
+  maxToRenderPerBatch={10}
+  windowSize={10}
+  removeClippedSubviews={true}
+/>
+```
+
+### 4. Animation Best Practices
+Use react-native-reanimated for complex animations:
+
+```typescript
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
+
+const AnimatedComponent = () => {
+  const offset = useSharedValue(0);
+  
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [{ translateX: withSpring(offset.value * 255) }],
+  }));
+
+  return <Animated.View style={[styles.box, animatedStyles]} />;
+};
+```
+
+### 5. Memoization Strategy
+Prevent unnecessary re-renders:
+
+```typescript
+import { memo, useMemo, useCallback } from 'react';
+
+const ExpensiveComponent = memo(({ data, onPress }) => {
+  const processedData = useMemo(
+    () => data.filter(item => item.active).map(transform),
+    [data]
+  );
+
+  const handlePress = useCallback(
+    (id) => onPress(id, processedData),
+    [onPress, processedData]
+  );
+
+  return <View>{/* Render content */}</View>;
+});
+```
+
+## 🧪 Testing Strategy
+
+### Unit Testing with Jest
+```typescript
+// __tests__/components/Button.test.tsx
+import { render, fireEvent } from '@testing-library/react-native';
+import Button from '../Button';
+
+describe('Button', () => {
+  it('calls onPress when pressed', () => {
+    const mockOnPress = jest.fn();
+    const { getByText } = render(
+      <Button title="Press me" onPress={mockOnPress} />
+    );
+    
+    fireEvent.press(getByText('Press me'));
+    expect(mockOnPress).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+### Integration Testing
+Test feature modules together:
+
+```typescript
+// Test authentication flow
+describe('Authentication Flow', () => {
+  it('navigates to home after successful login', async () => {
+    const { getByLabelText, getByText } = render(<App />);
+    
+    fireEvent.changeText(getByLabelText('Email'), 'user@example.com');
+    fireEvent.changeText(getByLabelText('Password'), 'password123');
+    fireEvent.press(getByText('Login'));
+    
+    await waitFor(() => {
+      expect(getByText('Welcome Home')).toBeTruthy();
+    });
+  });
+});
+```
+
+### E2E Testing with Maestro
+```yaml
+# login-flow.yaml
+appId: com.yourapp.identifier
+---
+- launchApp
+- tapOn: "Login"
+- inputText: "user@example.com"
+- tapOn: "Password"
+- inputText: "secure123"
+- tapOn: "Submit"
+- assertVisible: "Welcome"
+```
+
+## 🔒 Security Best Practices
+
+### 1. Secure Storage
+```typescript
+import * as SecureStore from 'expo-secure-store';
+
+// Store sensitive data
+await SecureStore.setItemAsync('authToken', token);
+
+// Retrieve sensitive data
+const token = await SecureStore.getItemAsync('authToken');
+```
+
+### 2. API Security
+```typescript
+// Use HTTPS and implement request signing
+const apiClient = axios.create({
+  baseURL: 'https://api.yourapp.com',
+  timeout: 10000,
+  headers: {
+    'X-API-Version': '2.0',
+  },
+});
+
+// Add auth interceptor
+apiClient.interceptors.request.use(async (config) => {
+  const token = await SecureStore.getItemAsync('authToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+```
+
+### 3. Input Validation
+```typescript
+import { z } from 'zod';
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8).max(100),
+});
+
+const validateLogin = (data: unknown) => {
+  try {
+    return loginSchema.parse(data);
+  } catch (error) {
+    throw new ValidationError('Invalid login data');
+  }
+};
+```
+
+## 📱 Platform-Specific Considerations
+
+### iOS-Specific Features
+```typescript
+import { Platform } from 'react-native';
+
+if (Platform.OS === 'ios') {
+  // Use SF Symbols
+  import { SymbolView } from 'expo-symbols';
+  
+  <SymbolView
+    name="heart.fill"
+    style={{ width: 40, height: 40 }}
+    type="hierarchical"
+    tintColor="red"
+  />
+}
+```
+
+### Android-Specific Optimizations
+```typescript
+if (Platform.OS === 'android') {
+  // Enable edge-to-edge display
+  import { enableEdgeToEdge } from 'react-native-edge-to-edge';
+  
+  enableEdgeToEdge();
+}
+```
+
+## 🚀 Modern Expo Features (SDK 52+)
+
+### 1. DOM Components
+```typescript
+// components/MapView.dom.tsx
+"use dom"
+
+import React from 'react';
+
+export default function MapView({ coordinates }: { coordinates: [number, number] }) {
+  return (
+    <div style={{ width: '100%', height: '400px' }}>
+      {/* Use any web library here */}
+      <div id="map" />
+    </div>
+  );
+}
+```
+
+### 2. Server Components (Preview)
+```typescript
+// app/products/[id].tsx
+export default async function ProductScreen({ params }: { params: { id: string } }) {
+  const product = await fetchProduct(params.id);
+  
+  return (
+    <ScrollView>
+      <ProductDetails product={product} />
+    </ScrollView>
+  );
+}
+```
+
+### 3. Video with expo-video
+```typescript
+import { useVideoPlayer, VideoView } from 'expo-video';
+
+const player = useVideoPlayer('https://example.com/video.mp4', (player) => {
+  player.loop = true;
+  player.play();
+});
+
+<VideoView
+  player={player}
+  style={styles.video}
+  allowsFullscreen
+  allowsPictureInPicture
+/>
+```
+
+## 🎯 State Management
+
+### Zustand for Simple State
+```typescript
+import { create } from 'zustand';
+
+const useAppStore = create((set) => ({
+  user: null,
+  setUser: (user) => set({ user }),
+  logout: () => set({ user: null }),
+}));
+```
+
+### React Query for Server State
+```typescript
+import { useQuery, useMutation } from '@tanstack/react-query';
+
+const useUserProfile = () => {
+  return useQuery({
+    queryKey: ['userProfile'],
+    queryFn: fetchUserProfile,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+};
+```
+
+## 📊 Performance Monitoring
+
+### React DevTools & Expo Tools
+```typescript
+// Enable performance monitoring in development
+if (__DEV__) {
+  import('./dev-tools').then(({ setupDevTools }) => {
+    setupDevTools();
+  });
+}
+```
+
+### Custom Performance Tracking
+```typescript
+const measurePerformance = (name: string, fn: () => void) => {
+  const start = performance.now();
+  fn();
+  const duration = performance.now() - start;
+  
+  console.log(`${name} took ${duration}ms`);
+  
+  // Send to analytics
+  analytics.track('Performance', { name, duration });
+};
+```
+
+## 🔄 Continuous Integration
+
+### EAS Build Configuration
+```json
+// eas.json
+{
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    }
+  }
+}
+```
+
+### Pre-commit Hooks
+```json
+// package.json
+{
+  "scripts": {
+    "lint": "expo lint",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "pre-commit": "yarn lint && yarn type-check && yarn test"
+  }
+}
+```
+
+## 🌐 Accessibility
+
+Always implement accessibility features:
+
+```typescript
+<Pressable
+  onPress={handlePress}
+  accessible={true}
+  accessibilityLabel="Submit form"
+  accessibilityHint="Double tap to submit the form"
+  accessibilityRole="button"
+>
+  <Text>Submit</Text>
+</Pressable>
+```
+
+## 📝 Documentation Standards
+
+- Document complex business logic
+- Include JSDoc for public APIs
+- Maintain a README with setup instructions
+- Create component storybook entries
+
+Remember: These standards evolve with the ecosystem. Stay updated with Expo SDK releases and React Native updates for the latest best practices.
