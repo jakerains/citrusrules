@@ -1,0 +1,131 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+alwaysApply: true
+description: Complete context and workflow instructions for the citrusrules project
+---
+
+# CitrusRules Project Context
+
+## What This Project Is
+CitrusRules is a CLI tool that fetches `.mdc` template files from GitHub and installs them into `.cursor/rules` directories. It's designed to help developers quickly set up Cursor AI rules for different development best practices.
+
+- **Package Name**: `citrusrules`
+- **Current Version**: 1.7.1
+- **GitHub**: https://github.com/jakerains/citrusrules
+- **NPM**: https://www.npmjs.com/package/citrusrules
+- **Author**: jakerains
+
+## Project Structure
+```
+citrusrules/
+├── bin/cli.js              # CLI entry point with Commander.js
+├── src/
+│   ├── config.js           # GitHub template URL configuration
+│   └── utils.js            # Core functionality (fetch & write templates)
+├── templates/              # Source .mdc templates (12 total)
+│   ├── mobile-standards.mdc     # Comprehensive Expo/RN 2025 standards
+│   ├── testing-strategy.mdc     # Testing best practices
+│   ├── TODO-tracking.mdc        # TODO management system
+│   └── ... (9 more templates)
+├── test/                   # Vitest test suite
+└── .cursor/rules/          # Local rules for this project
+```
+
+## Available Templates & CLI Flags
+- `-d, --development-workflow` → Development workflow best practices
+- `-e, --error-handling` → Error handling patterns
+- `-p, --performance` → Performance optimization
+- `-s, --security` → Security best practices  
+- `-a, --api-design` → API design standards
+- `-c, --component-standards` → Component architecture
+- `-b, --db-best-practices` → Database best practices
+- `-o, --devops-ci-cd` → DevOps and CI/CD workflows
+- `-m, --mobile-standards` → **Comprehensive Expo & React Native 2025 standards** (recently rewritten)
+- `-t, --TODO-tracking` → TODO management system
+- `-r, --testing-strategy` → Testing methodologies
+- `-u, --uv-python-projects` → Python project standards with uv
+
+## Development Workflow
+
+### Local Development & Testing
+1. **Test locally**: `node bin/cli.js -m` (or any flag)
+2. **Run tests**: `npm test` (uses Vitest)
+3. **Test specific template**: `node bin/cli.js --mobile-standards`
+
+### Making Changes to Templates
+1. Edit files in `templates/` directory
+2. Test locally by running CLI commands
+3. Update version in `package.json` (semantic versioning)
+4. Follow publishing workflow below
+
+### Version Management
+- Use semantic versioning (major.minor.patch)
+- Update `package.json` version before publishing
+- Recent versions: 1.6.1 → 1.7.0 → 1.7.1
+
+### Publishing Workflow (IMPORTANT!)
+**Always publish to BOTH Git and NPM:**
+
+1. **Commit and push to GitHub:**
+   ```bash
+   git add .
+   git commit -m "descriptive commit message"
+   git push origin main
+   ```
+
+2. **Publish to NPM:**
+   ```bash
+   npm publish
+   ```
+
+3. **Test deployment:**
+   ```bash
+   # Test in temporary directory
+   npx citrusrules@latest -m
+   ```
+
+### Testing Deployment
+Always verify published package works:
+```bash
+mkdir temp-test && cd temp-test
+npx citrusrules@latest --mobile-standards
+ls -la .cursor/rules/  # Should show mobile-standards.mdc
+```
+
+## Technical Details
+- **Runtime**: Node.js >=18.0.0
+- **Module Type**: ES Modules (`"type": "module"`)
+- **Dependencies**: axios, chalk, commander, fs-extra
+- **Dev Dependencies**: vitest, nock
+- **Template Source**: Fetches from GitHub raw URLs
+- **Target**: Installs to `.cursor/rules/` in current working directory
+
+## Key Files to Know
+- `bin/cli.js` - CLI interface with all command options
+- `src/utils.js` - Core logic for fetching and writing templates  
+- `src/config.js` - GitHub URL configuration
+- `templates/*.mdc` - Source template files
+- `package.json` - Package configuration and version
+
+## Recent Major Updates
+- **Version 1.7.0**: Complete rewrite of `mobile-standards.mdc` with comprehensive Expo SDK 52+ and React Native 2025 best practices
+- **Version 1.7.1**: Updated README to reflect mobile-standards improvements
+
+## Important Notes
+- Templates are fetched from GitHub raw URLs, not local files
+- CLI creates `.cursor/rules/` directory if it doesn't exist
+- Each template has YAML frontmatter defining when Cursor applies the rule
+- Always test locally before publishing
+- Both Git and NPM must be updated for complete deployment
+
+## When Working on This Project
+1. Always check current version in `package.json`
+2. Test changes locally with `node bin/cli.js`
+3. Run test suite with `npm test`
+4. Update version number for any changes
+5. Commit to Git AND publish to NPM
+6. Verify deployment works with `npx citrusrules@latest`
