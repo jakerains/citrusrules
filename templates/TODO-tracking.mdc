@@ -1,13 +1,9 @@
 ---
-description: A system for creating and maintaining TODO files that document the step-by-step process of implementing features, similar to Claude Code's checkpoint system. Start with /TODO mention.
-globs: 
-alwaysApply: false
----
----
-description: TODO Tracking System - Automatically create and maintain TODO files for features and tasks
-globs: 
+description: TODO Tracking System – Automatically create and maintain TODO files when `/TODO` is mentioned; leverages Cursor v1.2 Agent To‑Dos to mirror progress and mark tasks complete.
+globs:
   - "**/*.{js,jsx,ts,tsx,py,go,rs,java,c,cpp,cs,rb,php,swift,kt,scala,r,m,dart,lua,jl,ex,clj,hs,ml,fs,v,vb,sql,sh,ps1,yaml,yml,json,xml,html,css,scss,sass,less,md,mdx,vue,svelte}"
   - "**/TODO/*.md"
+alwaysApply: false
 ---
 
 # TODO Tracking System
@@ -16,11 +12,15 @@ A system for creating and maintaining TODO files that document the step-by-step 
 
 <rule>
 name: todo_tracking_system
-description: Automatically creates and maintains TODO files for tracking feature implementation with checkpoints when /TODO is mentioned
-type: Agent Requested
+description: Automatically creates and maintains TODO files for feature implementation, syncing status with the Cursor Agent To‑Do checklist when /TODO is detected
 
 content: |
   ## TODO Tracking System Instructions
+
+  ### Agent To‑Dos Integration (Cursor v1.2)
+  - Each `/TODO` command converts into an Agent To‑Do line so you can watch progress in the chat sidebar or Slack.
+  - The checklist auto‑updates: ✅ Done when the related code diff is applied; 🔄 In Progress while the agent works.
+  - Queue follow‑up prompts with **Enter**; force‑send with **Alt + Enter** to interrupt.
 
   When /TODO is detected or this rule is relevant, follow these guidelines:
 
@@ -249,8 +249,9 @@ related_rules:
   - code_documentation
   - project_structure
 
-metadata:
-  version: 1.0
+  metadata:
+  version: 1.1
+  updated: 2025-07-07
   author: cursor-rules
   tags: [productivity, documentation, project-management]
 </rule>
