@@ -1,6 +1,6 @@
 {
   "name": "citrusrules",
-  "version": "1.7.2",
+  "version": "1.8.0",
   "type": "module",
   "description": "Fetch .mdc templates into .cursor/rules via CLI",
   "keywords": [

@@ -9,6 +9,7 @@ export function getTemplateFilename(name) {
   const mapping = {
     'developmentWorkflow': 'development-workflow',
     'errorHandling': 'error-handling',
+    'playwrightTesting': 'playwright-testing',
     'apiDesign': 'api-design',
     'componentStandards': 'component-standards',
     'dbBestPractices': 'db-best-practices',

@@ -1,0 +1,180 @@
+---
+description: Comprehensive Playwright testing best practices for E2E, component, and visual testing. Use when implementing, debugging, or improving automated tests.
+---
+
+# Playwright Testing Strategy
+
+Follow these guidelines whenever you add or maintain end-to-end (E2E), component, or visual tests using Playwright.
+
+## Core Principles
+- **Use Playwright Test runner** instead of the bare Playwright library. It provides project matrices, parallelisation, retries, tracing, built-in TypeScript support, and rich reporting.
+- **Test across all supported browsers** (Chromium, Firefox, WebKit). Configure this in `playwright.config.ts` using the `devices` presets.
+- **Keep the Playwright dependency fresh**: `npm install -D @playwright/test@latest` and run `npx playwright install` to fetch new browser engines.
+- **Write tests that are resilient to change**: Focus on user-facing behavior, not implementation details.
+
+## Repository Conventions
+- Place specs inside `tests/` and mirror the application's folder structure for clarity (e.g. `tests/auth/login.spec.ts`).
+- Name test files with `.spec.ts` suffix so they are auto-discovered.
+- Commit `playwright.config.ts` with:
+  - a `projects` array covering the 3 browsers
+  - `retries` set to `2` in CI, `0` locally
+  - `reporter: [['html', { open: 'never' }], ['line']]`
+- Use TypeScript—even if the app is JavaScript—by giving spec files a `.ts` extension. Playwright ships its own TS tooling; no extra ts-config is required.
+
+## Writing Effective Tests
+
+### Locator Strategy
+- **Prefer user-visible locators**: `page.getByRole('button', { name: 'Submit' })` over CSS selectors
+- **Use data-testid sparingly**: Only when semantic locators aren't feasible
+- **Avoid brittle selectors**: Never use auto-generated class names or position-based selectors
+- **Chain locators for precision**: `page.getByRole('dialog').getByRole('button', { name: 'OK' })`
+
+### Assertions & Waits
+- **Use web-first assertions** (`expect(locator).toHaveText(...)`) over manual waits. They auto-retry under the hood.
+- **Avoid hard waits**: `page.waitForTimeout()` is almost always wrong. Use `page.waitForResponse()` or `expect(locator).toBeVisible()` instead.
+- **Assert on meaningful state**: Test what the user experiences, not internal implementation.
+
+### Test Structure
+- **Arrange-Act-Assert pattern**: Clear setup, single action, verify result
+- **One concept per test**: Don't test multiple unrelated features in one spec
+- **Use descriptive test names**: `should show validation error when email is invalid`
+- **Keep tests **idempotent & independent**: Never rely on execution order.
+
+## Advanced Patterns
+
+### Page Object Models
+- Encapsulate page logic in **Page Object Models** placed under `tests/pages/`. This keeps specs declarative.
+- Focus on actions and assertions, not element queries:
+```typescript
+// tests/pages/LoginPage.ts
+export class LoginPage {
+  constructor(private page: Page) {}
+  
+  async loginWith(email: string, password: string) {
+    await this.page.getByLabel('Email').fill(email);
+    await this.page.getByLabel('Password').fill(password);
+    await this.page.getByRole('button', { name: 'Log in' }).click();
+  }
+  
+  async expectErrorMessage(message: string) {
+    await expect(this.page.getByRole('alert')).toHaveText(message);
+  }
+}
+```
+
+### Fixtures & Authentication
+- **Use fixtures** for authenticated contexts or seeded data.
+- **Store auth state**: Use `page.context().storageState()` to persist login sessions
+- **Create reusable fixtures** for common test scenarios:
+```typescript
+// tests/fixtures/auth.ts
+export const test = base.extend<{ authenticatedPage: Page }>({
+  authenticatedPage: async ({ page }, use) => {
+    await page.goto('/login');
+    await page.getByLabel('Email').fill('user@example.com');
+    await page.getByLabel('Password').fill('password');
+    await page.getByRole('button', { name: 'Log in' }).click();
+    await expect(page.getByRole('navigation')).toBeVisible();
+    await use(page);
+  },
+});
+```
+
+### Visual & Accessibility Testing
+- **Screenshot comparisons**: Use `expect(page).toHaveScreenshot()` for visual regression tests
+- **Accessibility audits**: Install `@axe-core/playwright` and run `await expect(page).toPassAxeTest()`
+- **Responsive testing**: Test across different viewport sizes using `page.setViewportSize()`
+
+## Tooling & Debugging
+- **Run `npx playwright test --ui`** (UI Mode) for a time-travel debugging experience.
+- **Generate new tests quickly** with `npx playwright codegen <url>`; refine the output before committing.
+- **Capture failing runs** with tracing enabled: `npx playwright test --trace on` and open with `npx playwright show-trace`.
+- **When a flake is suspected**, re-run just that spec with `--repeat-each 5`.
+- **Use VS Code extension** for integrated test running and debugging.
+
+## Continuous Integration
+- In CI, pass `CI=true` so Playwright automatically uses headless mode and disables video to speed up runs.
+- Store test reports and traces as artefacts for later inspection.
+- **Shard tests** across multiple CI workers: `npx playwright test --shard=1/4`
+- **Fail fast** in CI: Set `maxFailures: 5` in config to avoid long feedback loops.
+
+## Using Cursor's Browser Tooling (MCP)
+- When the AI needs to interact with a live browser during debugging or to capture assets (screenshots/console logs), invoke the available browser tooling API rather than shelling out.
+  - **Open page / click / fill** via the dedicated Playwright MCP tool.
+  - **Capture screenshots** at failure points for richer feedback.
+  - **Check console logs** for runtime errors during test development.
+  - **Inspect network requests** to debug API integration issues.
+- Always include a short natural-language explanation before issuing the tool call so users understand what is happening.
+
+### Setting Up Playwright MCP
+If the Playwright MCP tools are not available or installed, offer to add the Playwright MCP server to the project's `.cursor/mcp.json` file:
+
+```json
+{
+  "mcpServers": {
+    "Playwright": {
+      "command": "npx @playwright/mcp@latest",
+      "env": {}
+    }
+  }
+}
+```
+
+After adding this configuration:
+1. Save the `.cursor/mcp.json` file
+2. Cursor will automatically detect the new MCP server and show a popup in the bottom left corner asking if you'd like to enable it
+3. Click "Enable" in the popup to activate the Playwright MCP tools
+4. The Playwright MCP tools will then become available for browser automation, live debugging, screenshots, and interactive testing during development
+
+## Example `playwright.config.ts`
+```typescript
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  timeout: 30_000,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: [
+    ['html', { open: 'never' }],
+    ['line'],
+    ['junit', { outputFile: 'results.xml' }]
+  ],
+  use: {
+    trace: 'on-first-retry',
+    video: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+    baseURL: 'http://localhost:3000',
+  },
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox',  use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit',   use: { ...devices['Desktop Safari'] } },
+    { name: 'mobile-chrome', use: { ...devices['Pixel 5'] } },
+    { name: 'mobile-safari', use: { ...devices['iPhone 12'] } },
+  ],
+  webServer: {
+    command: 'npm run dev',
+    port: 3000,
+    reuseExistingServer: !process.env.CI,
+  },
+});
+```
+
+## Common Pitfalls to Avoid
+- **Don't use `page.waitForTimeout()`**: Use proper waits for specific conditions
+- **Don't test implementation details**: Focus on user-visible behavior
+- **Don't make tests depend on each other**: Each test should be independent
+- **Don't ignore flaky tests**: Fix the root cause, don't just retry
+- **Don't skip cross-browser testing**: Bugs often manifest differently across browsers
+
+## Commit Checklist
+- [ ] Specs and page objects added/updated
+- [ ] `playwright.config.ts` updated if needed
+- [ ] All tests pass locally on all browsers: `npx playwright test`
+- [ ] No flaky tests (run with `--repeat-each 3` to verify)
+- [ ] CI green with reports artefact uploaded
+- [ ] Dependency `@playwright/test` bumped if outdated
+- [ ] Visual snapshots updated if UI changed
+
+Adhering to this rule ensures robust, cross-browser E2E coverage with minimal flakiness and maximum maintainability.

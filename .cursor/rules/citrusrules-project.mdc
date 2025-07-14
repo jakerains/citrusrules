@@ -1,9 +1,4 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
 alwaysApply: true
 description: Complete context and workflow instructions for the citrusrules project
 ---
@@ -14,7 +9,7 @@ description: Complete context and workflow instructions for the citrusrules proj
 CitrusRules is a CLI tool that fetches `.mdc` template files from GitHub and installs them into `.cursor/rules` directories. It's designed to help developers quickly set up Cursor AI rules for different development best practices.
 
 - **Package Name**: `citrusrules`
-- **Current Version**: 1.7.1
+- **Current Version**: 1.8.0
 - **GitHub**: https://github.com/jakerains/citrusrules
 - **NPM**: https://www.npmjs.com/package/citrusrules
 - **Author**: jakerains
@@ -28,9 +23,10 @@ citrusrules/
 │   └── utils.js            # Core functionality (fetch & write templates)
 ├── templates/              # Source .mdc templates (12 total)
 │   ├── mobile-standards.mdc     # Comprehensive Expo/RN 2025 standards
+│   ├── playwright-testing.mdc   # Playwright testing with MCP browser tools
 │   ├── testing-strategy.mdc     # Testing best practices
 │   ├── TODO-tracking.mdc        # TODO management system
-│   └── ... (9 more templates)
+│   └── ... (8 more templates)
 ├── test/                   # Vitest test suite
 └── .cursor/rules/          # Local rules for this project
 ```
@@ -38,7 +34,7 @@ citrusrules/
 ## Available Templates & CLI Flags
 - `-d, --development-workflow` → Development workflow best practices
 - `-e, --error-handling` → Error handling patterns
-- `-p, --performance` → Performance optimization
+- `-p, --playwright-testing` → **Playwright testing best practices with MCP browser tools**
 - `-s, --security` → Security best practices  
 - `-a, --api-design` → API design standards
 - `-c, --component-standards` → Component architecture
@@ -65,7 +61,7 @@ citrusrules/
 ### Version Management
 - Use semantic versioning (major.minor.patch)
 - Update `package.json` version before publishing
-- Recent versions: 1.6.1 → 1.7.0 → 1.7.1
+- Recent versions: 1.7.0 → 1.7.1 → 1.7.2 → 1.8.0
 
 ### Publishing Workflow (IMPORTANT!)
 **Always publish to BOTH Git and NPM:**
@@ -112,6 +108,7 @@ ls -la .cursor/rules/  # Should show mobile-standards.mdc
 - `package.json` - Package configuration and version
 
 ## Recent Major Updates
+- **Version 1.8.0**: Replaced `performance.mdc` with `playwright-testing.mdc` - comprehensive Playwright testing best practices with MCP browser tools integration
 - **Version 1.7.0**: Complete rewrite of `mobile-standards.mdc` with comprehensive Expo SDK 52+ and React Native 2025 best practices
 - **Version 1.7.1**: Updated README to reflect mobile-standards improvements
 

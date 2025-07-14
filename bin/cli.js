@@ -12,7 +12,7 @@ program
 program
   .option('-d, --development-workflow', 'Fetch development-workflow.mdc template')
   .option('-e, --error-handling', 'Fetch error-handling.mdc template')
-  .option('-p, --performance', 'Fetch performance.mdc template')
+  .option('-p, --playwright-testing', 'Fetch playwright-testing.mdc template')
   .option('-s, --security', 'Fetch security.mdc template')
   .option('-a, --api-design', 'Fetch api-design.mdc template')
   .option('-c, --component-standards', 'Fetch component-standards.mdc template')

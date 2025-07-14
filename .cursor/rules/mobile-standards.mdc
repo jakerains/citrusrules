@@ -1,6 +1,5 @@
 ---
 description: Rules for mobile application development.
-globs: ["**/*.{swift,kt,dart,js,tsx}"]
 alwaysApply: false
 ---
 ---
