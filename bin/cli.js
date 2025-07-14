@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { fetchAndWriteTemplates } from '../src/utils.js';
-import { TEMPLATE_URL_BASE } from '../src/config.js';
+import ora from 'ora';
+import { fetchAndWriteTemplates, showBanner, showSuccess } from '../src/utils.js';
 
 const program = new Command();
+
+// Show awesome banner
+showBanner();
+
 program
   .name('citrusrules')
-  .description('Fetch .mdc templates into .cursor/rules');
+  .description('🍋 Fetch .mdc templates into .cursor/rules')
+  .version('1.8.1');
 
 program
   .option('-d, --development-workflow', 'Fetch development-workflow.mdc template')
@@ -28,7 +33,22 @@ const opts = program.opts();
 const flags = Object.keys(opts).filter((k) => opts[k]);
 
 if (flags.length === 0) {
+  console.log(chalk.yellow('\n🤔 No templates selected. Here are your options:\n'));
   program.help();
 } else {
-  await fetchAndWriteTemplates(flags);
+  const spinner = ora({
+    text: 'Fetching fresh templates from the citrus grove...',
+    color: 'yellow',
+    spinner: 'dots'
+  }).start();
+
+  try {
+    await fetchAndWriteTemplates(flags, spinner);
+    spinner.succeed(chalk.green('🎉 Templates successfully installed!'));
+    showSuccess(flags);
+  } catch (error) {
+    spinner.fail(chalk.red('❌ Failed to fetch templates'));
+    console.error(chalk.red(`Error: ${error.message}`));
+    process.exit(1);
+  }
 }

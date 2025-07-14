@@ -9,7 +9,7 @@ description: Complete context and workflow instructions for the citrusrules proj
 CitrusRules is a CLI tool that fetches `.mdc` template files from GitHub and installs them into `.cursor/rules` directories. It's designed to help developers quickly set up Cursor AI rules for different development best practices.
 
 - **Package Name**: `citrusrules`
-- **Current Version**: 1.8.0
+- **Current Version**: 1.8.1
 - **GitHub**: https://github.com/jakerains/citrusrules
 - **NPM**: https://www.npmjs.com/package/citrusrules
 - **Author**: jakerains
@@ -61,7 +61,7 @@ citrusrules/
 ### Version Management
 - Use semantic versioning (major.minor.patch)
 - Update `package.json` version before publishing
-- Recent versions: 1.7.0 → 1.7.1 → 1.7.2 → 1.8.0
+- Recent versions: 1.7.0 → 1.7.1 → 1.7.2 → 1.8.0 → 1.8.1
 
 ### Publishing Workflow (IMPORTANT!)
 **Always publish to BOTH Git and NPM:**
@@ -108,6 +108,7 @@ ls -la .cursor/rules/  # Should show mobile-standards.mdc
 - `package.json` - Package configuration and version
 
 ## Recent Major Updates
+- **Version 1.8.1**: Enhanced CLI with citrus-themed ASCII art banner, ora spinners, emoji-enhanced success messages, and improved UX
 - **Version 1.8.0**: Replaced `performance.mdc` with `playwright-testing.mdc` - comprehensive Playwright testing best practices with MCP browser tools integration
 - **Version 1.7.0**: Complete rewrite of `mobile-standards.mdc` with comprehensive Expo SDK 52+ and React Native 2025 best practices
 - **Version 1.7.1**: Updated README to reflect mobile-standards improvements

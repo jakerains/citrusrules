@@ -1,0 +1,162 @@
+---
+description: Comprehensive development workflow with structured task tracking and progress management
+globs: 
+alwaysApply: false
+---
+---
+name: DevelopmentWorkflowTracker
+type: Agent Requested
+description: Research, plan, implement, and track progress on new features with structured task lists and progress tracking based on Claude Code methodologies
+glob: **/*.{js,ts,tsx,jsx,py,java,go,rb,php}
+priority: high
+---
+
+# Development Workflow Assistant
+
+As your development assistant, I'll help build new features or components by following a structured approach based on advanced AI planning methodologies. This rule helps maintain consistent implementation workflows and thorough documentation.
+
+## Planning Strategy
+
+I'll use extended thinking mode for complex planning. When you want more thorough analysis, prompt me with:
+
+- **"think"** - Medium analysis depth
+- **"think hard"** - Deep analysis with multiple considerations  
+- **"ultrathink"** - Maximum analysis for complex architectural decisions
+
+## 5-Phase Development Workflow
+
+### Phase 1: Research & Discovery
+1. **Understand Requirements**: Clarify the feature scope, constraints, and success criteria
+2. **Technical Analysis**: Assess current architecture, dependencies, and integration points
+3. **User Journey Mapping**: Define how users will interact with this feature
+4. **Risk Assessment**: Identify potential challenges, blockers, and mitigation strategies
+
+### Phase 2: Planning & Architecture  
+1. **Technical Design**: Create detailed implementation approach with architecture diagrams
+2. **Task Breakdown**: Split work into manageable, testable chunks with clear acceptance criteria
+3. **Dependency Mapping**: Identify what needs to be built first and integration requirements
+4. **Timeline Estimation**: Provide realistic effort estimates with buffer for unknowns
+
+### Phase 3: Implementation
+1. **Environment Setup**: Ensure development environment is ready with all dependencies
+2. **Incremental Development**: Build feature in small, testable increments
+3. **Code Quality**: Follow established patterns, add comprehensive tests, and document decisions
+4. **Progress Tracking**: Regular check-ins with clear status updates and blocker identification
+
+### Phase 4: Verification & Testing
+1. **Unit Testing**: Comprehensive test coverage for all new functionality
+2. **Integration Testing**: Verify feature works properly with existing systems
+3. **User Acceptance**: Validate feature meets original requirements and user needs
+4. **Performance Testing**: Ensure feature doesn't negatively impact system performance
+
+### Phase 5: Progress Tracking & Documentation
+1. **Status Dashboard**: Maintain clear visibility into completed, in-progress, and pending tasks
+2. **Decision Log**: Document key technical decisions and rationale for future reference
+3. **Lessons Learned**: Capture insights for improving future development workflows
+4. **Handoff Documentation**: Prepare comprehensive documentation for maintenance and future development
+
+## Task Management Templates
+
+### Task Definition Template
+```
+## Task: [Brief Description]
+**Priority**: High/Medium/Low
+**Estimate**: [Time estimate]
+**Dependencies**: [What must be completed first]
+**Acceptance Criteria**:
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
+
+**Implementation Notes**:
+- Technical approach
+- Edge cases to consider
+- Testing strategy
+```
+
+### Progress Tracking Template
+```
+## Feature Progress: [Feature Name]
+**Overall Status**: [% Complete] 
+**Current Phase**: [Research/Planning/Implementation/Verification/Documentation]
+
+### Completed Tasks ✅
+- [x] Task 1 - Brief description
+- [x] Task 2 - Brief description
+
+### In Progress 🔄
+- [ ] Task 3 - Brief description (Assignee: [Name])
+- [ ] Task 4 - Brief description (Assignee: [Name])
+
+### Pending Tasks 📋
+- [ ] Task 5 - Brief description
+- [ ] Task 6 - Brief description
+
+### Blockers & Risks ⚠️
+- **Blocker 1**: Description and mitigation plan
+- **Risk 1**: Potential impact and monitoring approach
+
+### Next Steps 👥
+1. [Immediate next action]
+2. [Following action]
+3. [Future consideration]
+```
+
+## Implementation Guidelines
+
+When implementing features, I will:
+
+1. **Start with clarification** - Ensure I understand the requirements completely before proceeding
+2. **Provide detailed plans** - Break down complex features into manageable tasks with clear acceptance criteria
+3. **Follow established patterns** - Use existing architectural patterns and coding standards
+4. **Prioritize testing** - Write tests alongside implementation to ensure reliability
+5. **Document decisions** - Explain technical choices and trade-offs for future reference
+6. **Track progress** - Maintain clear visibility into what's completed, in-progress, and pending
+7. **Identify dependencies** - Call out what needs to be done first and integration requirements
+8. **Communicate blockers** - Highlight issues that need resolution to maintain progress
+9. **Provide regular updates** - Keep stakeholders informed of progress and any changes to timeline
+10. **Plan for maintenance** - Consider long-term maintainability and documentation needs
+
+## Progress Tracking Integration
+
+During feature development, I'll maintain a progress dashboard that includes:
+
+1. **Feature Overview**: High-level description, success criteria, and current status
+2. **Task Breakdown**: Detailed list of all tasks with status, assignee, and completion percentage
+3. **Timeline**: Key milestones, dependencies, and estimated completion dates
+4. **Risk Register**: Identified risks, mitigation strategies, and current status
+5. **Decision Log**: Record of key technical decisions and rationale
+6. **Testing Status**: Test coverage, passing/failing tests, and quality metrics
+7. **Documentation**: Links to technical documentation, user guides, and implementation notes
+
+## Success Metrics
+
+For each feature implementation, I'll track:
+
+1. **Completion Rate**: Percentage of tasks completed on time
+2. **Quality Metrics**: Test coverage, bug reports, performance impact
+3. **User Satisfaction**: Feedback on feature usability and value
+4. **Technical Debt**: Code quality, maintainability, and documentation completeness
+5. **Knowledge Transfer**: Successful handoff to maintenance team
+
+## Workflow Integration
+
+This approach integrates seamlessly with common development workflows:
+
+- **Agile/Scrum**: Tasks align with sprint planning and daily standups
+- **Kanban**: Progress tracking supports visual workflow management  
+- **GitOps**: Documentation and decisions integrate with pull request workflows
+- **DevOps**: Verification phase aligns with CI/CD pipeline requirements
+
+## Regular Review Process
+
+I'll regularly review and update the implementation approach by:
+
+1. Assessing progress against original timeline and adjusting as needed
+2. Identifying process improvements based on lessons learned
+3. Updating risk assessments as new information becomes available
+4. Refining task breakdown and estimates based on actual completion times
+5. Identify and recommend the next task to tackle
+6. Update any dependencies affected by this task
+
+This structured approach ensures consistent, documented, and thoroughly tested feature implementations with clear progress tracking and full visibility into the development process.
