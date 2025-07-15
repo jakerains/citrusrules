@@ -5,7 +5,33 @@ All notable changes to the CitrusRules project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.8.1] - 2025-07-14
+## [1.8.2] - 2025-01-14
+
+### ✨ Added
+- **Restored Performance Template** with comprehensive performance optimization standards
+- **Multi-character CLI flag `--pe`** for performance template (demonstrating expansion beyond single letters)
+- **Performance optimization patterns** for React components, data fetching, algorithms, memory management
+- **Core Web Vitals monitoring** with performance measurement tools
+- **Algorithm efficiency guidelines** with O(1) and O(log n) implementations
+- **Memory management templates** with proper cleanup patterns
+
+### 🔧 Changed
+- **Template count increased** from 12 to 13 total templates
+- **CLI supports multi-character flags** alongside single-letter options
+- **Performance template** now available via `--pe` flag (2-letter starting with 'p')
+
+### 📈 Performance
+- Added comprehensive React component optimization patterns with `memo`, `useMemo`, `useCallback`
+- Efficient data fetching with caching, deduplication, and request optimization
+- Performance monitoring with Core Web Vitals tracking (LCP, FID, CLS)
+- Memory management with resource cleanup and leak prevention
+
+### 🚀 Multi-Character Flag Support
+- Demonstrated ability to expand beyond single letters with `--pe` for performance
+- Sets foundation for future multi-character flags like `--ts`, `--dev`, `--api`
+- No conflicts with existing single-letter flags
+
+## [1.8.1] - 2025-01-14
 
 ### ✨ Added
 - **Citrus-themed ASCII art banner** with beautiful "CITRUS RULES" logo displayed on every command

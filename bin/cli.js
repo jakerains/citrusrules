@@ -12,7 +12,7 @@ showBanner();
 program
   .name('citrusrules')
   .description('🍋 Fetch .mdc templates into .cursor/rules')
-  .version('1.8.1');
+  .version('1.8.2');
 
 program
   .option('-d, --development-workflow', 'Fetch development-workflow.mdc template')
@@ -26,7 +26,8 @@ program
   .option('-m, --mobile-standards', 'Fetch mobile-standards.mdc template')
   .option('-t, --TODO-tracking', 'Fetch TODO-tracking.mdc template')
   .option('-r, --testing-strategy', 'Fetch testing-strategy.mdc template')
-  .option('-u, --uv-python-projects', 'Fetch uv-python-projects.mdc template');
+  .option('-u, --uv-python-projects', 'Fetch uv-python-projects.mdc template')
+  .option('--pe', 'Fetch performance.mdc template');
 
 program.parse(process.argv);
 const opts = program.opts();

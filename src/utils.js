@@ -52,6 +52,7 @@ export function getTemplateFilename(name) {
     'developmentWorkflow': 'development-workflow',
     'errorHandling': 'error-handling',
     'playwrightTesting': 'playwright-testing',
+    'pe': 'performance', // Multi-character flag for performance
     'apiDesign': 'api-design',
     'componentStandards': 'component-standards',
     'dbBestPractices': 'db-best-practices',
