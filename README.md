@@ -28,13 +28,16 @@ CitrusRules is a CLI tool that instantly downloads **professional coding standar
 - 🔒 **Battle-Tested**: Templates used by real development teams
 - 🎨 **Customizable**: Easy to modify for your specific needs
 - 🌟 **Zero Config**: Works out of the box
+- 🎭 **Beautiful CLI**: Citrus-themed interface with loading animations
 
-### 🆕 Latest Updates (v1.3.0)
+### 🆕 Latest Updates (v1.8.2)
 
-- ⚡ **Short Flags**: Use `-d` instead of `--development-workflow` for lightning-fast commands
-- 🧹 **Clean Package**: Only the latest working version available (no legacy confusion)
-- 🚀 **Enhanced CLI**: Improved help output and better error messages
-- 📦 **Lightweight**: Streamlined package with just the essentials
+- 🎭 **Beautiful ASCII Banner**: Stunning "CITRUS RULES" logo with every command
+- ⚡ **Performance Template Restored**: Comprehensive optimization patterns with `--pe` flag
+- 🎪 **Playwright Testing**: Advanced E2E testing with MCP browser tools integration
+- 🌪️ **Elegant Loading**: Ora spinners for smooth user experience
+- 📱 **Enhanced Mobile Standards**: Complete 2025 Expo SDK 52+ rewrite
+- 🔧 **Multi-Character Flags**: Support for `--pe` performance flag alongside single letters
 
 ## 🚀 Quick Start
 
@@ -48,9 +51,12 @@ npx citrusrules -d
 npx citrusrules --error-handling
 # or: npx citrusrules -e
 
-# ⚡ Performance optimization standards
-npx citrusrules --performance
+# 🎪 Playwright testing with MCP browser tools
+npx citrusrules --playwright-testing
 # or: npx citrusrules -p
+
+# ⚡ Performance optimization standards
+npx citrusrules --pe
 
 # 🔒 Security best practices
 npx citrusrules --security
@@ -79,18 +85,21 @@ npx citrusrules --uv-python-projects
 |-------|------|-------------|
 | `-d` | `--development-workflow` | 📊 Comprehensive development workflow with task tracking |
 | `-e` | `--error-handling` | 🛡️ Robust error handling patterns and recovery |
-| `-p` | `--performance` | ⚡ Performance optimization standards |
+| `-p` | `--playwright-testing` | 🎪 **NEW** Playwright E2E testing with MCP browser tools |
+| `--pe` | `--pe` | ⚡ **RESTORED** Performance optimization standards |
 | `-s` | `--security` | 🔒 Security best practices and vulnerability prevention |
 | `-a` | `--api-design` | 🌐 RESTful API design guidelines |
 | `-c` | `--component-standards` | 🎨 React/Vue component development standards |
 | `-b` | `--db-best-practices` | 🗄️ Database query and schema best practices |
 | `-o` | `--devops-ci-cd` | 🔧 DevOps and CI/CD pipeline standards |
-| `-m` | `--mobile-standards` | 📱 Comprehensive Expo & React Native 2025 standards |
+| `-m` | `--mobile-standards` | 📱 **ENHANCED** Expo SDK 52+ & React Native 2025 standards |
 | `-t` | `--TODO-tracking` | 📋 Advanced TODO tracking system for feature implementation |
 | `-r` | `--testing-strategy` | 🧪 Comprehensive testing methodologies |
 | `-u` | `--uv-python-projects` | 🐍 Modern Python project management with UV |
 
 ## 📋 Available Templates
+
+**🎉 13 Professional Templates Available**
 
 ### 🏆 Core Development Templates
 | Template | Description | Best For |
@@ -100,9 +109,10 @@ npx citrusrules --uv-python-projects
 | ⚡ **performance** | Performance optimization standards | Algorithm efficiency, React optimization, monitoring |
 | 🐍 **uv-python-projects** | Modern Python project management using UV | Fast dependency resolution, lockfiles, virtual environments |
 
-### 🔒 Security & Quality Templates  
+### 🧪 Testing & Quality Templates  
 | Template | Description | Best For |
 |----------|-------------|----------|
+| 🎪 **playwright-testing** | **NEW** Advanced Playwright E2E testing with MCP browser tools | End-to-end testing, visual regression, browser automation |
 | 🔒 **security** | Security best practices and vulnerability prevention | XSS protection, input validation, secure coding |
 | 🧪 **testing-strategy** | Comprehensive testing methodologies | Unit testing, integration testing, TDD practices |
 | 📋 **TODO-tracking** | Advanced TODO tracking system for feature implementation | Project management, task tracking, feature development |
@@ -118,7 +128,7 @@ npx citrusrules --uv-python-projects
 | Template | Description | Best For |
 |----------|-------------|----------|
 | 🔧 **devops-ci-cd** | DevOps and CI/CD pipeline standards | Deployment, automation, infrastructure as code |
-| 📱 **mobile-standards** | Comprehensive Expo & React Native 2025 standards | SDK 52+, performance, testing, security, modern architecture |
+| 📱 **mobile-standards** | **ENHANCED** Expo SDK 52+ & React Native 2025 standards | Modern mobile development, performance, testing, security |
 
 ## 🎯 Examples
 
@@ -156,20 +166,24 @@ export async function getUser(id: string): Promise<User | null> {
 
 ## 🔧 How It Works
 
-1. **📥 Fetch**: Downloads curated `.mdc` rule templates from GitHub
-2. **📁 Save**: Places them in your project's `.cursor/rules/` directory  
-3. **🧠 Train**: Cursor AI learns your coding standards automatically
-4. **✨ Code**: Get suggestions that follow your rules instantly!
+1. **🎭 Beautiful Interface**: ASCII art banner and elegant loading animations
+2. **📥 Fetch**: Downloads curated `.mdc` rule templates from GitHub
+3. **📁 Save**: Places them in your project's `.cursor/rules/` directory  
+4. **🧠 Train**: Cursor AI learns your coding standards automatically
+5. **✨ Code**: Get suggestions that follow your rules instantly!
 
 ```bash
-# ⚡ Example workflow (using short flags!)
+# ⚡ Example workflow (with beautiful CLI!)
 npx citrusrules -e
+# 🎭 Shows citrus ASCII banner
+# 🌪️ Elegant loading spinner
 # → Downloads error-handling.mdc to .cursor/rules/
 # → Cursor now suggests robust error handling patterns!
 
 # 🚀 Quick combo for full-stack development:
-npx citrusrules -d -e -p -a -c
+npx citrusrules -d -e -p --pe -a -c
 # → Comprehensive development standards in seconds!
+# → Includes both Playwright testing AND performance optimization!
 ```
 
 ## 💡 Why CitrusRules?
@@ -186,26 +200,29 @@ Built-in templates for error handling, performance optimization, and feature dev
 ### 📚 **Learn Best Practices**
 Each template includes examples and explanations to improve your team's coding skills.
 
+### 🎭 **Beautiful Developer Experience**
+Citrus-themed CLI with ASCII art, loading animations, and emoji-enhanced feedback.
+
 ## 🎮 Interactive Demo
 
 ```bash
 # Try it now! (creates a test directory)
 mkdir my-awesome-project && cd my-awesome-project
 
-# ⚡ Get the core development templates (using short flags!)
-npx citrusrules -d -e -p
+# ⚡ Get the core development templates
+npx citrusrules -d -e --pe
 
-# 🔒 Add security and testing standards
-npx citrusrules -s -r
+# 🎪 Add testing and security standards
+npx citrusrules -p -s -r
 
 # 🎨 Include architecture templates
 npx citrusrules -a -c -b
 
-# 🚀 Or get everything at once:
-npx citrusrules -d -e -p -s -a -c -b -o -m -t -r -u
+# 🚀 Or get everything at once (all 13 templates!):
+npx citrusrules -d -e -p --pe -s -a -c -b -o -m -t -r -u
 
 ls .cursor/rules/
-# → development-workflow.mdc  error-handling.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc  db-best-practices.mdc  devops-ci-cd.mdc  mobile-standards.mdc  uv-python-projects.mdc
+# → development-workflow.mdc  error-handling.mdc  playwright-testing.mdc  performance.mdc  security.mdc  testing-strategy.mdc  api-design.mdc  component-standards.mdc  db-best-practices.mdc  devops-ci-cd.mdc  mobile-standards.mdc  uv-python-projects.mdc  TODO-tracking.mdc
 
 # Now open this project in Cursor and see the magic! ✨
 ```
@@ -217,19 +234,20 @@ ls .cursor/rules/
 # Use short flags for quick access:
 npx citrusrules -d    # development workflow
 npx citrusrules -e    # error handling
-npx citrusrules -p    # performance
+npx citrusrules -p    # playwright testing
+npx citrusrules --pe  # performance optimization
 
 # Or combine multiple:
-npx citrusrules -d -e -p -s
+npx citrusrules -d -e -p --pe -s
 
-# See all options:
+# See all options with beautiful banner:
 npx citrusrules --help
 ```
 
 ### Option 2: Global Install 🌍
 ```bash
 npm install -g citrusrules
-citrusrules -p -s     # performance + security
+citrusrules --pe -s     # performance + security
 ```
 
 ### Option 3: Project Development 📁
@@ -238,7 +256,25 @@ npm install --save-dev citrusrules
 npx citrusrules -e -r  # error handling + testing
 ```
 
-> **✨ Latest Version**: We maintain only the latest version (1.3.0) on npm for the cleanest experience. No legacy issues or confusing old versions!
+> **✨ Latest Version**: We maintain only the latest version (1.8.2) on npm for the cleanest experience. No legacy issues or confusing old versions!
+
+## 🎪 New in v1.8.x
+
+### 🎭 Beautiful CLI Experience
+- **ASCII Art Banner**: Stunning "CITRUS RULES" logo on every command
+- **Loading Animations**: Elegant ora spinners during template downloads
+- **Enhanced Feedback**: Emoji-rich success messages and visual indicators
+
+### 🎪 Playwright Testing Template
+- **MCP Browser Tools Integration**: Complete setup for `.cursor/mcp.json`
+- **Advanced Testing Patterns**: Page Object Models, fixtures, visual testing
+- **Agent-Requested Rules**: Automatic application when working on test files
+
+### ⚡ Performance Template Restoration
+- **Comprehensive Optimization**: React components, data fetching, algorithms
+- **Core Web Vitals Monitoring**: LCP, FID, CLS tracking
+- **Memory Management**: Resource cleanup and leak prevention
+- **Multi-Character Flag**: Available via `--pe` (demonstrating expansion beyond single letters)
 
 ## 🤝 Contributing
 
@@ -299,14 +335,16 @@ alwaysApply: false              # Whether to apply everywhere
 ## 🗺️ Roadmap
 
 ### ✅ Recently Completed
+- [x] 🎭 **Beautiful CLI Interface**: ASCII art banner and loading animations  
+- [x] 🎪 **Playwright Testing Template**: Advanced E2E testing with MCP browser tools
+- [x] ⚡ **Performance Template Restoration**: Comprehensive optimization patterns
+- [x] 🔧 **Multi-Character Flag Support**: `--pe` flag for performance template
+- [x] 📱 **Enhanced Mobile Standards**: Complete 2025 Expo SDK 52+ rewrite
 - [x] 🐍 **UV Python Projects**: Modern Python project management with UV for 10-100x faster workflows
-- [x] ⚡ **Short Flag Support**: Single-character flags for all commands (-d, -e, -p, etc.)
-- [x] 🧹 **Package Cleanup**: Removed legacy versions for cleaner user experience
 - [x] 🎨 React/Vue component standards
 - [x] 🗄️ Database query best practices  
 - [x] 🧪 Testing strategy templates
 - [x] 🌐 API design guidelines
-- [x] 📱 Mobile development standards
 - [x] 🔧 DevOps and CI/CD rules
 - [x] 🔒 Enhanced security templates
 
@@ -317,8 +355,15 @@ alwaysApply: false              # Whether to apply everywhere
 - [ ] 🌍 Internationalization (i18n) best practices
 - [ ] 📊 Analytics and monitoring templates
 - [ ] 🎨 Design system integration standards
+- [ ] 🔧 More multi-character flags (--ts, --dev, --api)
 
 ## ❓ FAQ
+
+<details>
+<summary><strong>Q: What's the difference between `-p` and `--pe`?</strong></summary>
+<br>
+A: `-p` gets you the Playwright testing template, while `--pe` gets you the performance optimization template. Both are valuable for different aspects of development!
+</details>
 
 <details>
 <summary><strong>Q: Can I use both short and long flags?</strong></summary>
@@ -342,6 +387,12 @@ A: Absolutely! Edit the .mdc files in .cursor/rules/ to match your team's specif
 <summary><strong>Q: Do these work with other AI coding assistants?</strong></summary>
 <br>
 A: Currently designed for Cursor, but the principles can be adapted to other tools.
+</details>
+
+<details>
+<summary><strong>Q: What are MCP browser tools?</strong></summary>
+<br>
+A: Model Context Protocol tools that let Cursor interact with browsers for testing. The Playwright template includes complete setup instructions!
 </details>
 
 ## 🍋 Why "CitrusRules"?
