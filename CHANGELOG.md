@@ -5,6 +5,15 @@ All notable changes to the CitrusRules project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.3] - 2025-07-18
+
+### 📖 Documentation
+- **Updated README.md** to accurately reflect all v1.8.2 features
+- **Version synchronization** across package.json, CLI, and README
+- **Enhanced feature documentation** for Playwright testing, performance optimization, and CLI experience
+- **Updated template count** to 13 total templates
+- **Improved FAQ section** with flag differences and MCP browser tools explanation
+
 ## [1.8.2] - 2025-01-14
 
 ### ✨ Added

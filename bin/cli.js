@@ -12,7 +12,7 @@ showBanner();
 program
   .name('citrusrules')
   .description('🍋 Fetch .mdc templates into .cursor/rules')
-  .version('1.8.2');
+  .version('1.8.3');
 
 program
   .option('-d, --development-workflow', 'Fetch development-workflow.mdc template')

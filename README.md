@@ -30,7 +30,7 @@ CitrusRules is a CLI tool that instantly downloads **professional coding standar
 - 🌟 **Zero Config**: Works out of the box
 - 🎭 **Beautiful CLI**: Citrus-themed interface with loading animations
 
-### 🆕 Latest Updates (v1.8.2)
+### 🆕 Latest Updates (v1.8.3)
 
 - 🎭 **Beautiful ASCII Banner**: Stunning "CITRUS RULES" logo with every command
 - ⚡ **Performance Template Restored**: Comprehensive optimization patterns with `--pe` flag
@@ -256,7 +256,7 @@ npm install --save-dev citrusrules
 npx citrusrules -e -r  # error handling + testing
 ```
 
-> **✨ Latest Version**: We maintain only the latest version (1.8.2) on npm for the cleanest experience. No legacy issues or confusing old versions!
+> **✨ Latest Version**: We maintain only the latest version (1.8.3) on npm for the cleanest experience. No legacy issues or confusing old versions!
 
 ## 🎪 New in v1.8.x
 
